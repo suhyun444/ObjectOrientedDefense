@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 
+class Tile;
+enum class TileType;
 class GameManager;
 class Renderer;
 class Player;
@@ -26,4 +28,5 @@ public:
 
     // 타워나 몬스터가 호출할 팩토리 메서드
     std::shared_ptr<Player> createPlayer();
+    std::shared_ptr<Tile> createTile(int gridX, int gridY, TileType type);
 };
