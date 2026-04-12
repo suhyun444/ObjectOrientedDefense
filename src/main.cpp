@@ -1,45 +1,36 @@
-#include <SFML/Graphics.hpp>
-#include <optional> // SFML 3의 pollEvent 반환값 처리를 위해 필요
+#include "GameManager.h"
+#include "Renderer.h"
+#include "ObjectFactory.h"
+#include "Timer.h" // 앞서 언급하신 정적 타이머 클래스 가정
+#include "Tile.h"
 
-int main()
-{
-    // [변경점 1] VideoMode 초기화
-    // SFML 3에서는 폭과 높이를 개별 인자로 받지 않고 sf::Vector2u 객체 하나로 받습니다. 
-    // 따라서 중괄호 {} 를 사용하여 전달해야 합니다.
-    sf::RenderWindow window(sf::VideoMode({1280, 720}), "SFML 3.0.2 Window");
-    while (window.isOpen())
-    {
-        // [변경점 2] 이벤트 루프 (std::optional 및 std::variant 적용)
-        // pollEvent()는 이제 이벤트를 참조로 채우지 않고, std::optional<sf::Event>를 반환합니다.
-        while (const std::optional event = window.pollEvent())
-        {
-            // 타입 안전(Type-safe) 방식으로 이벤트 종류를 판별합니다.
-            if (event->is<sf::Event::Closed>())
-            {
-                window.close();
-            }
-            
-            // (참고) 키보드 입력 등 데이터가 포함된 이벤트를 처리할 때는 getIf<T>()를 사용합니다.
-            /*
-            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
-            {
-                if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
-                    window.close();
-            }
-            */
-        }
+int main() {
+    // 1. 시스템 매니저 스택 할당 (생명주기 안전성 확보)
+    // Renderer 내부에서 sf::RenderWindow가 생성됨
+    Renderer renderer(1280, 720, "Tower Defense Alpha");
+    GameManager gameManager;
+    Timer timer; 
 
-        sf::CircleShape shape(3.f);
-        shape.setOutlineColor(sf::Color::Red);
-        shape.setOutlineThickness(2.f);
-        shape.setFillColor(sf::Color::Black);
-        shape.setPosition({640.0f,360.0f});
+    // 2. ObjectFactory 초기화 (의존성 주입)
+    // 이제 팩토리는 내부적으로 gameManager와 renderer의 포인터를 가짐
+    ObjectFactory::getInstance().initialize(&gameManager, &renderer);
 
-        window.clear();
-        
-        window.draw(shape); 
+    // 3. 초기 객체 생성 (예: 플레이어)
+    auto player = ObjectFactory::getInstance().createPlayer();
+    ObjectFactory::getInstance().createTile(0, 0, TileType::Buildable); // 초록
+    ObjectFactory::getInstance().createTile(1, 0, TileType::Path);      // 회색
+    ObjectFactory::getInstance().createTile(2, 0, TileType::Occupied);  // 빨강
 
-        window.display();
+    // 4. 메인 게임 루프
+    while (renderer.isWindowOpen()) {
+        // 타이머 업데이트 (Static 변수 deltaTime 갱신)
+        timer.update();
+
+        // 시스템 업데이트 루프
+        gameManager.tick();
+
+        // 시스템 렌더링 루프 (내부에서 정렬 및 그리기 수행)
+        renderer.drawAll();
     }
 
     return 0;
