@@ -2,7 +2,7 @@
 #include "IRoutine.h"
 #include <functional>
 
-class Player : public IRoutine {
+class Player {
 private:
     int hp;
     bool alive;
@@ -15,6 +15,5 @@ public:
     void takeDamage(int damage);
     
     // IRoutine 오버라이딩
-    void update() override;
-    bool isAlive() const override;
+
 };

@@ -2,7 +2,7 @@
 #include <algorithm>
 
 Renderer::Renderer(unsigned int width, unsigned int height, const std::string& title) 
-    : window(sf::VideoMode({width, height}), title) {}
+    : window(sf::VideoMode({width, height}), title, sf::Style::Titlebar | sf::Style::Close) {}
 
 sf::RenderWindow& Renderer::getWindow() {
     return window;

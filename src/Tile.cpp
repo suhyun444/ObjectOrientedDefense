@@ -31,12 +31,7 @@ void Tile::setType(TileType newType) {
 }
 
 void Tile::update() {
-    // Timer의 static 함수를 이용해 3초마다 콘솔 출력 (안 그러면 1초에 60번 찍힘)
-    timeAccumulator += Timer::getDeltaTime();
-    if (timeAccumulator >= 3.0f) {
-        std::cout << "[System] Tile (" << gridX << ", " << gridY << ") Update 루프 정상 작동 중.\n";
-        timeAccumulator = 0.f; // 타이머 초기화
-    }
+
 }
 
 void Tile::render(sf::RenderWindow& window) {

@@ -12,10 +12,7 @@ std::shared_ptr<Player> ObjectFactory::createPlayer() {
         }
     });
 
-    // GameManager에 자동 등록
-    if (gameManager) {
-        gameManager->addRoutine(player);
-    }
+
 
     return player;
 }

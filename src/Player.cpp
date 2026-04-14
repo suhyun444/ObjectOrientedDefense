@@ -7,17 +7,12 @@ Player::Player(std::function<void()> deathCallback)
 void Player::takeDamage(int damage) {
     hp -= damage;
     std::cout << "Player Hit! Current HP: " << hp << "\n";
-}
-
-void Player::update() {
-    if (hp <= 0 && alive) {
+    if (hp <= 0 && alive)
+    {
         alive = false;
-        if (onDeathCallback) {
+        if (onDeathCallback)
+        {
             onDeathCallback(); // 콜백 실행
         }
     }
-}
-
-bool Player::isAlive() const { 
-    return alive; 
 }
