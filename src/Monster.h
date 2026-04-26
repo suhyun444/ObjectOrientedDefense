@@ -23,10 +23,11 @@ public:
     void setPath(const Path* newPath);
     void setTargetPlayer(Player* player);
     void takeDamage(int damage);
-    void attackPlayer();
 
     void update() override;
     bool isAlive() const override;
     void render(sf::RenderWindow& window) override;
     RenderLayer getLayer() const override;
+private:
+    void attackPlayer();
 };
