@@ -17,13 +17,6 @@ void Renderer::addRenderable(std::weak_ptr<IRenderable> renderable) {
 }
 
 void Renderer::drawAll() {
-    // 1. 이벤트 처리 (OS 창 닫기 등)
-    while (const std::optional<sf::Event> event = window.pollEvent()) {
-        if (event->is<sf::Event::Closed>()) {
-            window.close();
-        }
-    }
-
     // 화면 초기화
     window.clear(sf::Color(188, 188, 188));
 

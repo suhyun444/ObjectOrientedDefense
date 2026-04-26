@@ -1,19 +1,26 @@
 #pragma once
-#include "IRoutine.h"
 #include <functional>
+
+class Tower;
+class Wave;
 
 class Player {
 private:
     int hp;
+    int gold;
     bool alive;
     std::function<void()> onDeathCallback;
 
 public:
-    // 생성자
     Player(std::function<void()> deathCallback);
 
     void takeDamage(int damage);
-    
-    // IRoutine 오버라이딩
+    void addGold(int amount);
+    bool useGold(int amount);
+
+    void buildTower(Tower* tower);
+    void upgradeTower(Tower* tower);
+    void removeTower(Tower* tower);
+    void startWave(Wave* wave);
 
 };
