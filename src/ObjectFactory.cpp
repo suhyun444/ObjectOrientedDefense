@@ -3,6 +3,14 @@
 #include "GameManager.h" 
 #include "Tile.h"
 #include "Renderer.h"
+#include "Monster.h"
+#include "BasicTower.h"
+#include "Projectile.h"
+#include "Wave.h"
+#include "Map.h"
+#include "Path.h"
+#include "ProjectileDescription.h"
+#include "WaveDescription.h"
 
 std::shared_ptr<Player> ObjectFactory::createPlayer() {
     // 람다를 이용해 콜백 바인딩
@@ -23,4 +31,53 @@ std::shared_ptr<Tile> ObjectFactory::createTile(int gridX, int gridY, TileType t
     if (renderer) renderer->addRenderable(tile);
     
     return tile;
+}
+
+std::shared_ptr<Monster> ObjectFactory::createMonster(const Path* path) {
+    auto monster = std::make_shared<Monster>();
+    monster->setPath(path);
+
+    if (gameManager) gameManager->addRoutine(monster);
+    if (renderer) renderer->addRenderable(monster);
+
+    return monster;
+}
+
+std::shared_ptr<BasicTower> ObjectFactory::createBasicTower(float x, float y) {
+    auto tower = std::make_shared<BasicTower>();
+    tower->setPosition(x, y);
+
+    if (gameManager) gameManager->addRoutine(tower);
+    if (renderer) renderer->addRenderable(tower);
+
+    return tower;
+}
+
+std::shared_ptr<Projectile> ObjectFactory::createProjectile(const std::shared_ptr<Monster>& target, int damage, float x, float y) {
+    ProjectileDescription projectileDescription;
+    projectileDescription.damage = damage;
+    auto projectile = std::make_shared<Projectile>(target, projectileDescription);
+    projectile->setPosition(x, y);
+
+    if (gameManager) gameManager->addRoutine(projectile);
+    if (renderer) renderer->addRenderable(projectile);
+
+    return projectile;
+}
+
+std::shared_ptr<Wave> ObjectFactory::createWave(int totalCount, float spawnInterval, const Path* path) {
+    WaveDescription waveDescription;
+    waveDescription.rewardGold = 0;
+    waveDescription.waveInformation.push_back({totalCount, MonsterType::Basic});
+    (void)spawnInterval;
+    auto wave = std::make_shared<Wave>(waveDescription);
+    wave->setPath(path);
+
+    if (gameManager) gameManager->addRoutine(wave);
+
+    return wave;
+}
+
+std::shared_ptr<Map> ObjectFactory::createMap(int width, int height) {
+    return std::make_shared<Map>(width, height);
 }

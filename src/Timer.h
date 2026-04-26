@@ -1,19 +1,15 @@
 #pragma once
-#include <SFML/System/Clock.hpp>
-#include <SFML/System/Time.hpp>
+#include "IRoutine.h"
 
-class Timer {
+class Wave;
+class Timer : public IRoutine{
 private:
-    sf::Clock clock;           // 인스턴스가 소유 (static 아님)
-    static float deltaTime;    // 누구나 접근 가능한 공유 데이터 (static)
-
+    float waveDelaySeconds;
+    float waveElapsedSeconds;
+    Wave* currentWave;
 public:
-    Timer() = default;
-
-    // 메인 루프에서 인스턴스를 통해 호출됨
+    Timer();
     void update();
 
-    // 전역에서 파라미터 없이 호출 가능
-    static float getDeltaTime();
-    static float getDeltaTimeMs();
+    void setWaveDelay(float delaySeconds);
 };

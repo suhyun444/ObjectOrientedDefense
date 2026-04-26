@@ -9,7 +9,7 @@
                 "-g",
   				"${workspaceFolder}/src/*.cpp",
                 "-o",
-                "${workspaceFolder}\\${fileBasenameNoExtension}.exe",
+                "${workspaceFolder}\\$ood.exe",
                 "-I", "C:\\SFML-3.0.2\\include",
                 "-L", "C:\\SFML-3.0.2\\lib",
                 "-lsfml-graphics",
