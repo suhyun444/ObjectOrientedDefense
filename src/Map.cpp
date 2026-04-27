@@ -1,6 +1,5 @@
 #include "Map.h"
 #include "ObjectFactory.h"
-#include <SFML/Graphics/RectangleShape.hpp>
 
 static const std::vector<sf::Vector2i> pathCoordinates = {
     {0,6}, {1,6}, {2,6}, {3,6},
@@ -29,19 +28,21 @@ static const std::vector<sf::Vector2i> buildableCoordinates = {
     {20,1}, {20,2},
 };
 
-Map::Map(int width, int height) : width(width), height(height) {}
+Map::Map(int width, int height) : width(width), height(height) {
+    initialize();
+}
 
-void Map::initialize(ObjectFactory& factory) {
-    path.setPathTiles(pathCoordinates);
+void Map::initialize() {
+    m_path = ObjectFactory::getInstance().createPath(pathCoordinates);
 
     for (const auto& coord : buildableCoordinates) {
-        auto tile = factory.createTile(coord.x, coord.y);
+        auto tile = ObjectFactory::getInstance().createTile(coord.x, coord.y);
         tiles.push_back(tile);
     }
 }
 
 const Path& Map::getPath() const {
-    return path;
+    return *m_path;
 }
 
 std::shared_ptr<Tile> Map::getTile(int gridX, int gridY) const {
@@ -59,17 +60,3 @@ bool Map::canPlaceTower(int gridX, int gridY) const {
     return tile && !tile->hasTower();
 }
 
-void Map::render(sf::RenderWindow& window) {
-    const float tileSize = 50.f;
-    sf::RectangleShape rect({tileSize - 2.f, tileSize - 2.f});
-    rect.setFillColor(sf::Color(149, 165, 166));
-
-    for (const auto& tilePos : path.getPathTiles()) {
-        rect.setPosition({tilePos.x * tileSize, tilePos.y * tileSize});
-        window.draw(rect);
-    }
-}
-
-RenderLayer Map::getLayer() const {
-    return RenderLayer::Background;
-}

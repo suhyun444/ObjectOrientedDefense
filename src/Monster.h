@@ -11,7 +11,6 @@ class Monster : public GameObject {
 private:
     int health;
     MonsterDescription description;
-    sf::Vector2f position;
     bool alive;
     const Path* path;
     Player* targetPlayer;

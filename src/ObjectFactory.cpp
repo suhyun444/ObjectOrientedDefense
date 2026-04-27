@@ -79,13 +79,15 @@ std::shared_ptr<Wave> ObjectFactory::createWave(int totalCount, float spawnInter
     return wave;
 }
 
+std::shared_ptr<Path> ObjectFactory::createPath(const std::vector<sf::Vector2i>& coords) {
+    auto path = std::make_shared<Path>();
+    path->setPathTiles(coords);
+    if (renderer) renderer->addRenderable(path);
+    return path;
+}
+
 std::shared_ptr<Map> ObjectFactory::createMap(int width, int height) {
-    auto map = std::make_shared<Map>(width, height);
-    map->initialize(*this);
-
-    if (renderer) renderer->addRenderable(map);
-
-    return map;
+    return std::make_shared<Map>(width, height);
 }
 
 std::shared_ptr<FPSCounter> ObjectFactory::createFPSCounter() {

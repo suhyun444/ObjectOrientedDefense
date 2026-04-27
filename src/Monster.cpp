@@ -9,7 +9,8 @@ Monster::Monster(const MonsterDescription& description)
       description(description),
       alive(true),
       path(nullptr),
-      targetPlayer(nullptr) {}
+      targetPlayer(nullptr),
+      waypointIndex(0){}
 
 void Monster::setPath(const Path* newPath) {
     path = newPath;

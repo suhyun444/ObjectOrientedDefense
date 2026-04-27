@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+#include <vector>
+#include <SFML/System/Vector2.hpp>
 
 class FPSCounter;
 class Tile;
@@ -42,6 +44,7 @@ public:
     std::shared_ptr<BasicTower> createBasicTower(float x, float y);
     std::shared_ptr<Projectile> createProjectile(const std::shared_ptr<Monster>& target, int damage, float x, float y);
     std::shared_ptr<Wave> createWave(int totalCount, float spawnInterval, const Path* path);
+    std::shared_ptr<Path> createPath(const std::vector<sf::Vector2i>& coords);
     std::shared_ptr<Map> createMap(int width, int height);
     std::shared_ptr<FPSCounter> createFPSCounter();
 };

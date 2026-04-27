@@ -29,14 +29,14 @@ All source lives in `src/` as a single flat directory. The game loop in `main.cp
 
 ### Core Systems
 
-| Class | Role |
-|---|---|
-| `GameManager` | Owns every live `GameObject`; drives update ticks; tracks state (Running / GameOver / Victory) |
-| `Renderer` | SFML window; renders objects sorted by `RenderLayer` (Background → Entity → Projectile → UI) |
-| `InputManager` | Routes mouse/keyboard events to `IClickable` objects |
-| `ObjectFactory` | Singleton factory — always create objects here so they are registered in `GameManager` and `Renderer` automatically |
-| `Time` | 정적 deltaTime 제공자. 매 프레임 `time.update()` 호출 → `Time::getDeltaTime()`으로 조회 |
-| `Timer` | 쿨다운/지연 측정 유틸리티 (`Timer.h`). `IRoutine` 상속. Wave 스포닝 등 내부 타이밍에 사용 |
+| Class | Role                                                                                                                               |
+|---|------------------------------------------------------------------------------------------------------------------------------------|
+| `GameManager` | Owns every live `GameObject`; drives update ticks; tracks state (Running / GameOver / Victory)                                     |
+| `Renderer` | SFML window; renders objects sorted by `RenderLayer` (Background → Entity → Projectile → UI)                                       |
+| `InputManager` | Routes mouse/keyboard events to `IClickable` objects                                                                               |
+| `ObjectFactory` | Singleton factory — always create objects here with singleton so they are registered in `GameManager` and `Renderer` automatically |
+| `Time` | 정적 deltaTime 제공자. 매 프레임 `time.update()` 호출 → `Time::getDeltaTime()`으로 조회                                                           |
+| `Timer` | 쿨다운/지연 측정 유틸리티 (`Timer.h`). `IRoutine` 상속. Wave 스포닝 등 내부 타이밍에 사용                                                                   |
 
 ### GameObject Hierarchy
 

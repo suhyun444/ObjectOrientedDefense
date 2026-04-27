@@ -19,7 +19,6 @@ int main() {
     ObjectFactory::getInstance().initialize(&gameManager, &renderer,&inputManager);
     ObjectFactory::getInstance().createFPSCounter();
 
-    ObjectFactory::getInstance().initialize(&gameManager, &renderer, &inputManager);
 
     auto player = ObjectFactory::getInstance().createPlayer();
     auto map = ObjectFactory::getInstance().createMap(26, 15);
