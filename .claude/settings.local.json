@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(C:/msys64/ucrt64/bin/g++.exe -fdiagnostics-color=always -g src/*.cpp -o ood.exe -I C:/SFML-3.0.2/include -L C:/SFML-3.0.2/lib -lsfml-graphics -lsfml-window -lsfml-system)",
+      "Bash(C:/msys64/ucrt64/bin/g++.exe *)"
+    ]
+  }
+}

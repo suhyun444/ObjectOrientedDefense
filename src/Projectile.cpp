@@ -4,21 +4,13 @@
 #include <cmath>
 
 Projectile::Projectile(const std::shared_ptr<Monster>& target, const ProjectileDescription& description)
-    : GameObject(Tag::Projectile), description(description), alive(true), target(target), shape(6.f) {
-    shape.setFillColor(sf::Color(241, 196, 15));
-    shape.setOrigin({6.f, 6.f});
-    shape.setPosition(position);
-}
+    : GameObject(Tag::Projectile), description(description), alive(true), target(target) {}
 
 void Projectile::attackMonster() {
     auto targetShared = target.lock();
     if (targetShared && targetShared->isAlive()) {
         targetShared->takeDamage(description.damage);
     }
-}
-
-void Projectile::onHit() {
-    alive = false;
 }
 
 void Projectile::update() {
@@ -34,14 +26,13 @@ void Projectile::update() {
 
     if (len < 8.f) {
         attackMonster();
-        onHit();
+        alive = false;
         return;
     }
 
     if (len > 0.001f) {
         dir /= len;
         position += dir * (description.speed * Time::getDeltaTime());
-        shape.setPosition(position);
     }
 }
 
@@ -49,9 +40,7 @@ bool Projectile::isAlive() const {
     return alive;
 }
 
-void Projectile::render(sf::RenderWindow& window) {
-    window.draw(shape);
-}
+void Projectile::render(sf::RenderWindow& window) {}
 
 RenderLayer Projectile::getLayer() const {
     return RenderLayer::Projectile;

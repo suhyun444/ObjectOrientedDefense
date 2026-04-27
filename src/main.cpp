@@ -1,10 +1,8 @@
 #include "GameManager.h"
 #include "Renderer.h"
 #include "ObjectFactory.h"
-#include "Timer.h" // 앞서 언급하신 정적 타이머 클래스 가정
 #include "Tile.h"
 #include "Time.h"
-#include "Map.h"
 #include "Wave.h"
 #include "InputManager.h"
 
@@ -13,20 +11,14 @@ int main() {
     // Renderer 내부에서 sf::RenderWindow가 생성됨
     Renderer renderer(1280, 720, "Tower Defense Alpha");
     GameManager gameManager;
-    Timer timer; 
     Time time; // 게임 전체에서 공유되는 시간 관리 객체
     InputManager inputManager(renderer.getWindow());
     // 2. ObjectFactory 초기화 (의존성 주입)
     // 이제 팩토리는 내부적으로 gameManager와 renderer의 포인터를 가짐
     ObjectFactory::getInstance().initialize(&gameManager, &renderer);
+    ObjectFactory::getInstance().createFPSCounter();
 
     // 3. 초기 객체 생성 (예: 플레이어)
-    auto player = ObjectFactory::getInstance().createPlayer();
-    auto map = ObjectFactory::getInstance().createMap(26, 15);
-    auto wave = ObjectFactory::getInstance().createWave(5, 1.2f, &map->getPath());
-    wave->setTimer(&timer);
-    wave->setSpawnDelay(1.2f);
-    wave->loadFromFile("data/waves_stub.json");
 std::vector<std::pair<int, int>> pathCoordinates = {
     // 0. 새로 추가된 왼쪽 진입로 (가로 4칸)
     {0,6}, {1,6}, {2,6}, {3,6},

@@ -1,4 +1,5 @@
 #include "ObjectFactory.h"
+#include "FPSCounter.h"
 #include "Player.h"      
 #include "GameManager.h" 
 #include "Tile.h"
@@ -68,7 +69,7 @@ std::shared_ptr<Projectile> ObjectFactory::createProjectile(const std::shared_pt
 std::shared_ptr<Wave> ObjectFactory::createWave(int totalCount, float spawnInterval, const Path* path) {
     WaveDescription waveDescription;
     waveDescription.rewardGold = 0;
-    waveDescription.waveInformation.push_back({totalCount, MonsterType::Basic});
+    waveDescription.waveInformation.push_back(std::make_pair(totalCount, MonsterType::Goblin));
     (void)spawnInterval;
     auto wave = std::make_shared<Wave>(waveDescription);
     wave->setPath(path);
@@ -80,4 +81,11 @@ std::shared_ptr<Wave> ObjectFactory::createWave(int totalCount, float spawnInter
 
 std::shared_ptr<Map> ObjectFactory::createMap(int width, int height) {
     return std::make_shared<Map>(width, height);
+}
+
+std::shared_ptr<FPSCounter> ObjectFactory::createFPSCounter() {
+    auto obj = std::make_shared<FPSCounter>();
+    if (gameManager) gameManager->addRoutine(obj);
+    if (renderer) renderer->addRenderable(obj);
+    return obj;
 }

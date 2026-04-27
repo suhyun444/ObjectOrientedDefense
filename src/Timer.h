@@ -8,7 +8,7 @@ private:
     float waveElapsedSeconds;
     Wave* currentWave;
 public:
-    Timer();
+    explicit Timer(Wave* wave);
     void update();
 
     void setWaveDelay(float delaySeconds);

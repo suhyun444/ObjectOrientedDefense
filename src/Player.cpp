@@ -22,7 +22,7 @@ void Player::addGold(int amount) {
     gold += amount;
 }
 
-bool Player::spendGold(int amount) {
+bool Player::useGold(int amount) {
     if (gold < amount) {
         return false;
     }
@@ -42,4 +42,8 @@ void Player::upgradeTower(Tower* tower) {
 
 void Player::removeTower(Tower* tower) {
     (void)tower;
+}
+
+void Player::startWave(Wave* wave) {
+    (void)wave;
 }
