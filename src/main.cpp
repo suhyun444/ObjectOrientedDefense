@@ -16,7 +16,7 @@ int main() {
     InputManager inputManager(renderer.getWindow());
     // 2. ObjectFactory 초기화 (의존성 주입)
     // 이제 팩토리는 내부적으로 gameManager와 renderer의 포인터를 가짐
-    ObjectFactory::getInstance().initialize(&gameManager, &renderer);
+    ObjectFactory::getInstance().initialize(&gameManager, &renderer,&inputManager);
     ObjectFactory::getInstance().createFPSCounter();
 
     ObjectFactory::getInstance().initialize(&gameManager, &renderer, &inputManager);
