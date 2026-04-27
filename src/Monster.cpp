@@ -9,7 +9,8 @@ Monster::Monster(const MonsterDescription& description)
       description(description),
       alive(true),
       path(nullptr),
-      targetPlayer(nullptr) {}
+      targetPlayer(nullptr),
+      waypointIndex(0){}
 
 void Monster::setPath(const Path* newPath) {
     path = newPath;
@@ -29,11 +30,6 @@ void Monster::setTargetPlayer(Player* player) {
     targetPlayer = player;
 }
 
-void Monster::attackPlayer() {
-    if (targetPlayer) {
-        targetPlayer->takeDamage(1);
-    }
-}
 
 void Monster::update() {}
 
@@ -43,6 +39,6 @@ bool Monster::isAlive() const {
 
 void Monster::render(sf::RenderWindow& window) {}
 
-RenderLayer Monster::getLayer() const {
+    RenderLayer Monster::getLayer() const {
     return RenderLayer::Entity;
 }

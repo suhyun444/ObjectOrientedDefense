@@ -4,7 +4,6 @@
 #include "Path.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <cstddef>
 
 class Player;
 
@@ -12,10 +11,11 @@ class Monster : public GameObject {
 private:
     int health;
     MonsterDescription description;
-    sf::Vector2f position;
     bool alive;
     const Path* path;
     Player* targetPlayer;
+    int waypointIndex;
+    sf::CircleShape shape;
 
 public:
     explicit Monster(const MonsterDescription& description = MonsterDescription{});
@@ -29,5 +29,6 @@ public:
     void render(sf::RenderWindow& window) override;
     RenderLayer getLayer() const override;
 private:
-    void attackPlayer();
+    void moveAlongPath();
+    void dealDamageToPlayer();
 };

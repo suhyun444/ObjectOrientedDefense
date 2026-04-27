@@ -1,9 +1,10 @@
 #include "ObjectFactory.h"
 #include "FPSCounter.h"
-#include "Player.h"      
+#include "Player.h"
 #include "GameManager.h" 
 #include "Tile.h"
 #include "Renderer.h"
+#include "InputManager.h"
 #include "Monster.h"
 #include "BasicTower.h"
 #include "Projectile.h"
@@ -20,17 +21,16 @@ std::shared_ptr<Player> ObjectFactory::createPlayer() {
             this->gameManager->triggerGameOver();
         }
     });
-
-
-
     return player;
 }
-std::shared_ptr<Tile> ObjectFactory::createTile(int gridX, int gridY, TileType type) {
-    auto tile = std::make_shared<Tile>(gridX, gridY, type);
-    
+
+std::shared_ptr<Tile> ObjectFactory::createTile(int gridX, int gridY) {
+    auto tile = std::make_shared<Tile>(gridX, gridY);
+
     if (gameManager) gameManager->addRoutine(tile);
     if (renderer) renderer->addRenderable(tile);
-    
+    if (inputManager) inputManager->addClickable(tile);
+
     return tile;
 }
 
@@ -77,6 +77,13 @@ std::shared_ptr<Wave> ObjectFactory::createWave(int totalCount, float spawnInter
     if (gameManager) gameManager->addRoutine(wave);
 
     return wave;
+}
+
+std::shared_ptr<Path> ObjectFactory::createPath(const std::vector<sf::Vector2i>& coords) {
+    auto path = std::make_shared<Path>();
+    path->setPathTiles(coords);
+    if (renderer) renderer->addRenderable(path);
+    return path;
 }
 
 std::shared_ptr<Map> ObjectFactory::createMap(int width, int height) {
