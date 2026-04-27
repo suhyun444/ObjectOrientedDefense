@@ -1,33 +1,47 @@
 #include "Path.h"
 
-Path::Path(const std::vector<sf::Vector2f>& points) : points(points) {}
+void Path::setPathTiles(const std::vector<sf::Vector2i>& tiles) {
+    pathTiles = tiles;
+    waypoints.clear();
 
-void Path::setPoints(const std::vector<sf::Vector2f>& newPoints) {
-    points = newPoints;
+    if (tiles.empty()) return;
+
+    const float tileSize = 50.f;
+
+    waypoints.push_back({tiles[0].x * tileSize, tiles[0].y * tileSize});
+
+    for (int i = 1; i < static_cast<int>(tiles.size()) - 1; i++) {
+        int dx1 = tiles[i].x - tiles[i - 1].x;
+        int dy1 = tiles[i].y - tiles[i - 1].y;
+        int dx2 = tiles[i + 1].x - tiles[i].x;
+        int dy2 = tiles[i + 1].y - tiles[i].y;
+
+        if (dx1 != dx2 || dy1 != dy2) {
+            waypoints.push_back({tiles[i].x * tileSize, tiles[i].y * tileSize});
+        }
+    }
+
+    waypoints.push_back({tiles.back().x * tileSize, tiles.back().y * tileSize});
 }
 
-const std::vector<sf::Vector2f>& Path::getPoints() const {
-    return points;
+const std::vector<sf::Vector2i>& Path::getPathTiles() const {
+    return pathTiles;
 }
 
 int Path::size() const {
-    return static_cast<int>(points.size());
+    return static_cast<int>(waypoints.size());
 }
 
 const sf::Vector2f& Path::getPoint(int index) const {
     static const sf::Vector2f kOrigin(0.f, 0.f);
-    if (index < 0 || index >= static_cast<int>(points.size())) {
+    if (index < 0 || index >= static_cast<int>(waypoints.size())) {
         return kOrigin;
     }
-    return points[index];
+    return waypoints[index];
 }
 
 sf::Vector2f Path::getNextPoint(int index) const {
-    if (points.empty()) {
-        return {0.f, 0.f};
-    }
-    if (index + 1 >= static_cast<int>(points.size())) {
-        return points.back();
-    }
-    return points[index + 1];
+    if (waypoints.empty()) return {0.f, 0.f};
+    if (index + 1 >= static_cast<int>(waypoints.size())) return waypoints.back();
+    return waypoints[index + 1];
 }

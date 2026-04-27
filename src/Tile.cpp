@@ -1,49 +1,39 @@
 #include "Tile.h"
-#include "Time.h"
 #include <iostream>
 
-Tile::Tile(int gridX, int gridY, TileType type)
-        : GameObject(Tag::Tile),
-            type(type),
-            gridX(gridX),
-            gridY(gridY),
-            tilePosition(0.f, 0.f),
-            placedTower(nullptr),
-            timeAccumulator(0.f) {
-    
-    // 1. 그리드 인덱스를 픽셀 좌표로 변환 (타일 크기 50x50)
-    float tileSize = 50.f;
+Tile::Tile(int gridX, int gridY)
+    : GameObject(Tag::Tile),
+      gridX(gridX),
+      gridY(gridY),
+      tilePosition(0.f, 0.f),
+      placedTower(nullptr) {
+
+    const float tileSize = 50.f;
     position = {gridX * tileSize, gridY * tileSize};
     tilePosition = position;
 
-    // 2. 사각형 렌더링 세팅 (그리드 선이 보이도록 2픽셀 작게 설정)
     shape.setSize({tileSize - 2.f, tileSize - 2.f});
     shape.setPosition(position);
-
-    // 3. 타입별 색상 지정
-    switch (type) {
-        case TileType::Buildable: shape.setFillColor(sf::Color(46, 204, 113)); break; // 초록
-        case TileType::Path:      shape.setFillColor(sf::Color(149, 165, 166)); break; // 회색
-    }
+    shape.setFillColor(sf::Color(46, 204, 113));
 }
 
-void Tile::setType(TileType newType) {
-    type = newType;
-    switch (type) {
-        case TileType::Buildable: shape.setFillColor(sf::Color(46, 204, 113)); break;
-        case TileType::Path:      shape.setFillColor(sf::Color(149, 165, 166)); break;
-    }
+bool Tile::containsPoint(const sf::Vector2i& pixelPos) const {
+    const float tileSize = 50.f;
+    return pixelPos.x >= tilePosition.x && pixelPos.x < tilePosition.x + tileSize
+        && pixelPos.y >= tilePosition.y && pixelPos.y < tilePosition.y + tileSize;
 }
 
-void Tile::update() {
-
+bool Tile::onClick() {
+    std::cout << "[Tile] clicked (" << gridX << ", " << gridY << ")\n";
+    return true;
 }
+
+void Tile::update() {}
 
 void Tile::render(sf::RenderWindow& window) {
-    // Renderer가 이 함수를 호출하여 화면에 그림
     window.draw(shape);
 }
 
 RenderLayer Tile::getLayer() const {
-    return RenderLayer::Background; // 가장 밑바탕
+    return RenderLayer::Background;
 }
