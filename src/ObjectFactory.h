@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 
+class FPSCounter;
 class Tile;
 enum class TileType;
 class GameManager;
@@ -41,4 +42,5 @@ public:
     std::shared_ptr<Projectile> createProjectile(const std::shared_ptr<Monster>& target, int damage, float x, float y);
     std::shared_ptr<Wave> createWave(int totalCount, float spawnInterval, const Path* path);
     std::shared_ptr<Map> createMap(int width, int height);
+    std::shared_ptr<FPSCounter> createFPSCounter();
 };

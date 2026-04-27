@@ -1,41 +1,33 @@
 #include "Path.h"
 
-Path::Path(const std::vector<sf::Vector2f>& positions) : positions(positions) {}
-
-void Path::setPositions(const std::vector<sf::Vector2f>& newPositions) {
-    positions = newPositions;
-}
-
-const std::vector<sf::Vector2f>& Path::getPositions() const {
-    return positions;
-}
+Path::Path(const std::vector<sf::Vector2f>& points) : points(points) {}
 
 void Path::setPoints(const std::vector<sf::Vector2f>& newPoints) {
-    setPositions(newPoints);
+    points = newPoints;
 }
 
 const std::vector<sf::Vector2f>& Path::getPoints() const {
-    return getPositions();
+    return points;
 }
 
-std::size_t Path::size() const {
-    return positions.size();
+int Path::size() const {
+    return static_cast<int>(points.size());
 }
 
-const sf::Vector2f& Path::getPoint(std::size_t index) const {
+const sf::Vector2f& Path::getPoint(int index) const {
     static const sf::Vector2f kOrigin(0.f, 0.f);
-    if (index >= positions.size()) {
+    if (index < 0 || index >= static_cast<int>(points.size())) {
         return kOrigin;
     }
-    return positions[index];
+    return points[index];
 }
 
-sf::Vector2f Path::getNextPoint(std::size_t index) const {
-    if (positions.empty()) {
+sf::Vector2f Path::getNextPoint(int index) const {
+    if (points.empty()) {
         return {0.f, 0.f};
     }
-    if (index + 1 >= positions.size()) {
-        return positions.back();
+    if (index + 1 >= static_cast<int>(points.size())) {
+        return points.back();
     }
-    return positions[index + 1];
+    return points[index + 1];
 }
