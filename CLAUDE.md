@@ -51,7 +51,6 @@ Key concrete types: `Tile` (Buildable / Path), `Monster`, `Tower` / `BasicTower`
 ### Naming Conventions
 - Class & Struct names: `PascalCase`
 - Functions & local variables: `camelCase`
-- Private member variables: `m_` 접두사 사용 (예: `m_health`)
 - Interface classes: `I` 접두사 사용 (예: `IRoutine`)
 - Constants & Enums: `UPPER_SNAKE_CASE`
 

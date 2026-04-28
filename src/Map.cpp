@@ -33,7 +33,7 @@ Map::Map(int width, int height) : width(width), height(height) {
 }
 
 void Map::initialize() {
-    m_path = ObjectFactory::getInstance().createPath(pathCoordinates);
+    path = ObjectFactory::getInstance().createPath(pathCoordinates);
 
     for (const auto& coord : buildableCoordinates) {
         auto tile = ObjectFactory::getInstance().createTile(coord.x, coord.y);
@@ -42,7 +42,7 @@ void Map::initialize() {
 }
 
 const Path& Map::getPath() const {
-    return *m_path;
+    return *path;
 }
 
 std::shared_ptr<Tile> Map::getTile(int gridX, int gridY) const {

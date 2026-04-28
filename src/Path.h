@@ -8,7 +8,7 @@ class Path : public IRenderable {
 private:
     std::vector<sf::Vector2i> pathTiles;
     std::vector<sf::Vector2f> waypoints;
-    std::vector<sf::RectangleShape> m_shapes;
+    std::vector<sf::RectangleShape> shapes;
 
 public:
     Path() = default;

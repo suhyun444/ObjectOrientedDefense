@@ -10,7 +10,7 @@ class Map {
 private:
     int width;
     int height;
-    std::shared_ptr<Path> m_path;
+    std::shared_ptr<Path> path;
     std::vector<std::shared_ptr<Tile>> tiles;
 
 public:

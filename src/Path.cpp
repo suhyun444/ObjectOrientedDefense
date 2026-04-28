@@ -23,12 +23,12 @@ void Path::setPathTiles(const std::vector<sf::Vector2i>& tiles) {
 
     waypoints.push_back({tiles.back().x * tileSize, tiles.back().y * tileSize});
 
-    m_shapes.clear();
+    shapes.clear();
     for (const auto& coord : tiles) {
         sf::RectangleShape rect({tileSize - 2.f, tileSize - 2.f});
         rect.setFillColor(sf::Color(149, 165, 166));
         rect.setPosition({coord.x * tileSize, coord.y * tileSize});
-        m_shapes.push_back(rect);
+        shapes.push_back(rect);
     }
 }
 
@@ -55,7 +55,7 @@ sf::Vector2f Path::getNextPoint(int index) const {
 }
 
 void Path::render(sf::RenderWindow& window) {
-    for (const auto& shape : m_shapes)
+    for (const auto& shape : shapes)
         window.draw(shape);
 }
 

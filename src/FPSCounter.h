@@ -11,9 +11,9 @@ public:
     RenderLayer getLayer() const override;
 
 private:
-    sf::Font m_font;
-    sf::Text m_text;
-    int      m_frameCount = 0;
-    float    m_elapsed    = 0.f;
-    int      m_fps        = 0;
+    sf::Font font;
+    sf::Text text;
+    int      frameCount = 0;
+    float    elapsed    = 0.f;
+    int      fps        = 0;
 };
