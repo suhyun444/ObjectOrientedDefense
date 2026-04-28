@@ -33,6 +33,7 @@ public:
 
     void update() override;
     bool isAlive() const override;
+    int GetLevel() const;
 
 private:
     void spawnMonster();

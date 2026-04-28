@@ -13,7 +13,6 @@ class GameManager;
 
 class WaveStartButton : public IRoutine, public IRenderable, public IClickable {
 private:
-    int nextLevel;
     Wave* wave;
     sf::RectangleShape shape;
     sf::Font font;

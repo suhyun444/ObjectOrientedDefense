@@ -11,8 +11,7 @@ static const float BTN_WIDTH  = 200.f;
 static const float BTN_HEIGHT = 50.f;
 
 WaveStartButton::WaveStartButton(Wave* wave)
-    : nextLevel(1),
-      wave(wave){
+    : wave(wave){
     shape.setSize({BTN_WIDTH, BTN_HEIGHT});
     shape.setPosition(BTN_X, BTN_Y);
 
@@ -26,8 +25,6 @@ WaveStartButton::WaveStartButton(Wave* wave)
 
 
 bool WaveStartButton::isEnabled() const {
-    std::cout << "check button isEnabled\n";
-    std::cout << "Wave status : " << wave->isComplete() << "\n";
     return wave->isComplete();
 }
 
@@ -38,7 +35,6 @@ bool WaveStartButton::containsPoint(const sf::Vector2i& pixelPos) const {
 
 bool WaveStartButton::onClick() {
     wave->loadFromFile();
-    ++nextLevel;
     updateVisual();
     return true;
 }
@@ -55,7 +51,7 @@ void WaveStartButton::updateVisual() {
     else
     {
         shape.setFillColor(sf::Color(34, 139, 34));
-        label.setString(" Wave " + std::to_string(nextLevel) + " 시작");
+        label.setString(" Wave " + std::to_string(wave->GetLevel()) + " 시작");
     }
     label.setPosition(BTN_X + 10.f, BTN_Y + 14.f);
 }

@@ -25,6 +25,9 @@ Wave::Wave(const Path* path)
 
 bool Wave::loadFromFile() {
     ++level;
+    spawnIndex = 0;
+    spawnElapsed = 0.f;
+    monsters.clear();
     std::string filePath = "data/wave_" + std::to_string(level) + ".csv";
     description = parser.parseWave(filePath);
 
@@ -39,6 +42,10 @@ bool Wave::loadFromFile() {
     spawnElapsed = description.spawns[0].spawnTime;
     std::cout << "[Wave " << level << "] Start\n";
     return true;
+}
+
+int Wave::GetLevel() const {
+    return level;
 }
 
 void Wave::spawnMonster() {
