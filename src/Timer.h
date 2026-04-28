@@ -1,15 +1,19 @@
 #pragma once
+
 #include "IRoutine.h"
 
-class Wave;
-class Timer : public IRoutine{
+class Timer : public IRoutine {
 private:
-    float waveDelaySeconds;
-    float waveElapsedSeconds;
-    Wave* currentWave;
-public:
-    explicit Timer(Wave* wave);
-    void update();
+    float duration;
+    float elapsed;
+    bool finished;
 
-    void setWaveDelay(float delaySeconds);
+public:
+    explicit Timer(float duration);
+
+    void reset();
+    bool isFinished() const;
+    float getElapsed() const;
+
+    void update() override;
 };

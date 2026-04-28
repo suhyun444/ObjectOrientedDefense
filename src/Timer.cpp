@@ -1,22 +1,26 @@
 #include "Timer.h"
-#include "Wave.h"
 #include "Time.h"
 
-Timer::Timer(Wave* wave)
-    : waveDelaySeconds(0.f),
-      waveElapsedSeconds(0.f),
-      currentWave(wave) {}
+Timer::Timer(float duration)
+    : duration(duration),
+      elapsed(0.f),
+      finished(false) {}
 
-void Timer::setWaveDelay(float delaySeconds) {
-    waveDelaySeconds = delaySeconds;
+void Timer::reset() {
+    elapsed  = 0.f;
+    finished = false;
+}
+
+bool Timer::isFinished() const {
+    return finished;
+}
+
+float Timer::getElapsed() const {
+    return elapsed;
 }
 
 void Timer::update() {
-    if (!currentWave) return;
-
-    waveElapsedSeconds += Time::getDeltaTime();
-    if (waveElapsedSeconds >= waveDelaySeconds) {
-        currentWave->spawnMonster();
-        waveElapsedSeconds = 0.f;
-    }
+    if (finished) return;
+    elapsed += Time::getDeltaTime();
+    if (elapsed >= duration) finished = true;
 }

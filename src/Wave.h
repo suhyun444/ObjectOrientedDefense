@@ -1,35 +1,41 @@
 #pragma once
+
 #include "IRoutine.h"
 #include "WaveDescription.h"
+#include "MonsterDescription.h"
 #include "WaveParser.h"
+#include <map>
 #include <memory>
-#include <string>
 #include <vector>
 
 class Monster;
 class Path;
-class Timer;
 
+class WaveStartButton;
 class Wave : public IRoutine {
 private:
     int level;
     WaveDescription description;
-    int spawnedCount;
-    bool active;
+    std::map<MonsterType, MonsterDescription> monsterStats;
+    WaveParser parser;
+    std::weak_ptr<WaveStartButton> waveStartButton;
+    int spawnIndex;
+    bool spawningComplete;
+    float spawnElapsed;
     std::vector<std::shared_ptr<Monster>> monsters;
     const Path* path;
-    Timer* timer;
-    WaveParser parser;
 
 public:
-    Wave(const WaveDescription& description = WaveDescription{}, int level = 1);
+    Wave(const Path* path);
 
-    bool loadFromFile(const std::string& filePath);
-    void setPath(const Path* path);
-    void setTimer(Timer* timer);
-    void setSpawnDelay(float delaySeconds);
-    void spawnMonster();
+    bool loadFromFile();
+    bool isComplete() const;
 
     void update() override;
     bool isAlive() const override;
+    int GetLevel() const;
+
+private:
+    void spawnMonster();
+    bool isAllMonstersDefeated() const;
 };
