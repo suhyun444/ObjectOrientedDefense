@@ -11,6 +11,7 @@ void GameManager::setPlayer(Player* p) {
 }
 
 void GameManager::dealDamageToPlayer(int damage) {
+    if (currentState != GameState::Running) return;
     if (player) player->takeDamage(damage);
 }
 

@@ -49,6 +49,7 @@ bool Monster::isAlive() const {
 }
 
 void Monster::render(sf::RenderWindow& window) {
+    if (!alive) return;
     shape.setPosition(position);
     window.draw(shape);
 }
@@ -71,6 +72,11 @@ void Monster::moveAlongPath() {
     if (dist <= step) {
         position = target;
         ++waypointIndex;
+        if (waypointIndex >= path->size() - 1) {
+            if (onReachedEnd) onReachedEnd();
+            alive = false;
+            return;
+        }
     } else {
         position += (dir / dist) * step;
     }

@@ -11,7 +11,7 @@ WaveHUD::WaveHUD(const Wave* wave) : wave(wave) {
 }
 
 void WaveHUD::render(sf::RenderWindow& window) {
-    waveText.setString("Wave: " + std::to_string(wave->GetLevel()));
+    waveText.setString("Wave: " + std::to_string(wave->GetLevel() + 1));
     window.draw(waveText);
 }
 
