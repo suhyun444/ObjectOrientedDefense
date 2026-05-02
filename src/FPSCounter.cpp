@@ -2,7 +2,7 @@
 #include "Time.h"
 
 FPSCounter::FPSCounter() : GameObject(Tag::Default) {
-    if (!font.loadFromFile("C:/Windows/Fonts/arial.ttf")) return;
+    if (!font.loadFromFile("data/DungGeunMo.ttf")) return;
     text.setFont(font);
     text.setCharacterSize(18);
     text.setFillColor(sf::Color::White);

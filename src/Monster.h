@@ -4,8 +4,7 @@
 #include "Path.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/System/Vector2.hpp>
-
-class Player;
+#include <functional>
 
 class Monster : public GameObject {
 private:
@@ -13,7 +12,7 @@ private:
     MonsterDescription description;
     bool alive;
     const Path* path;
-    Player* targetPlayer;
+    std::function<void()> onReachedEnd;
     int waypointIndex;
     sf::CircleShape shape;
 
@@ -21,7 +20,7 @@ public:
     explicit Monster(const MonsterDescription& description = MonsterDescription{});
 
     void setPath(const Path* newPath);
-    void setTargetPlayer(Player* player);
+    void setOnReachedEnd(std::function<void()> callback);
     void takeDamage(int damage);
 
     void update() override;
@@ -30,5 +29,4 @@ public:
     RenderLayer getLayer() const override;
 private:
     void moveAlongPath();
-    void dealDamageToPlayer();
 };
