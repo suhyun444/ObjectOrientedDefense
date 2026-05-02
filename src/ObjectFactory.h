@@ -1,6 +1,8 @@
 #pragma once
 
 #include "MonsterDescription.h"
+#include "MonsterStatsLoader.h"
+#include <map>
 #include <memory>
 #include <vector>
 #include <SFML/System/Vector2.hpp>
@@ -25,6 +27,7 @@ private:
     GameManager*  gameManager  = nullptr;
     Renderer*     renderer     = nullptr;
     InputManager* inputManager = nullptr;
+    std::map<MonsterType, MonsterDescription> monsterStats;
 
     ObjectFactory() = default;
 
@@ -38,11 +41,13 @@ public:
         gameManager  = gm;
         renderer     = r;
         inputManager = im;
+        MonsterStatsLoader loader;
+        monsterStats = loader.load("data/monster_stats.csv");
     }
 
     std::shared_ptr<Player>          createPlayer();
     std::shared_ptr<Tile>            createTile(int gridX, int gridY);
-    std::shared_ptr<Monster>         createMonster(const Path* path, const MonsterDescription& desc = MonsterDescription{});
+    std::shared_ptr<Monster>         createMonster(const Path* path, MonsterType type = MonsterType::Goblin);
     std::shared_ptr<BasicTower>      createBasicTower(float x, float y);
     std::shared_ptr<Projectile>      createProjectile(const std::shared_ptr<Monster>& target, int damage, float x, float y);
     std::shared_ptr<Wave>            createWave(const Path* path);
