@@ -1,9 +1,18 @@
 #include "GameManager.h"
+#include "Player.h"
 #include <iostream>
 #include <algorithm>
 
 // 생성자 초기화
 GameManager::GameManager() : currentState(GameState::Running) {}
+
+void GameManager::setPlayer(Player* p) {
+    player = p;
+}
+
+void GameManager::dealDamageToPlayer(int damage) {
+    if (player) player->takeDamage(damage);
+}
 
 void GameManager::addRoutine(std::shared_ptr<IRoutine> routine) {
     pendingAdds.push_back(routine);

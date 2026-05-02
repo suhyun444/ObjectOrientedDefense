@@ -2,15 +2,18 @@
 #include "Tower.h"
 #include <iostream>
 
-Player::Player(std::function<void()> deathCallback) 
+Player::Player(std::function<void()> deathCallback)
     : hp(100), gold(0), alive(true), onDeathCallback(deathCallback) {}
+
+int Player::getHp()   const { return hp; }
+int Player::getGold() const { return gold; }
 
 void Player::takeDamage(int damage) {
     hp -= damage;
     std::cout << "Player Hit! Current HP: " << hp << "\n";
     if (hp <= 0 && alive)
     {
-        alive = false;
+    alive = false;
         if (onDeathCallback)
         {
             onDeathCallback(); // 콜백 실행

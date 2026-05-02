@@ -11,3 +11,10 @@ add_executable(ood ${SOURCES})
 
 # SFML 2.x 타겟 링킹 방식 적용
 target_link_libraries(ood PRIVATE sfml-graphics sfml-window sfml-system)
+
+# 빌드 시 data 디렉토리를 실행파일 옆에 복사
+add_custom_command(TARGET ood POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/data
+        $<TARGET_FILE_DIR:ood>/data
+)

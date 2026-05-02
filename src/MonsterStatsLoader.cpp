@@ -43,6 +43,15 @@ std::map<MonsterType, MonsterDescription> MonsterStatsLoader::load(const std::st
         desc.maxHealth  = std::stoi(tokens[1]);
         desc.speed      = std::stof(tokens[2]);
         desc.rewardGold = std::stoi(tokens[3]);
+
+        if (tokens.size() >= 8) {
+            auto r      = static_cast<sf::Uint8>(std::stoi(tokens[4]));
+            auto g      = static_cast<sf::Uint8>(std::stoi(tokens[5]));
+            auto b      = static_cast<sf::Uint8>(std::stoi(tokens[6]));
+            desc.color  = sf::Color(r, g, b);
+            desc.hollow = (std::stoi(tokens[7]) != 0);
+        }
+
         result[desc.type] = desc;
     }
 

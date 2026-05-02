@@ -14,6 +14,9 @@ private:
 public:
     Player(std::function<void()> deathCallback);
 
+    int getHp()   const;
+    int getGold() const;
+
     void takeDamage(int damage);
     void addGold(int amount);
     bool useGold(int amount);

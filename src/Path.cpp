@@ -6,9 +6,10 @@ void Path::setPathTiles(const std::vector<sf::Vector2i>& tiles) {
 
     if (tiles.empty()) return;
 
-    const float tileSize = 50.f;
+    const float tileSize   = 50.f;
+    const float halfTile   = tileSize / 2.f;
 
-    waypoints.push_back({tiles[0].x * tileSize, tiles[0].y * tileSize});
+    waypoints.push_back({tiles[0].x * tileSize + halfTile, tiles[0].y * tileSize + halfTile});
 
     for (int i = 1; i < static_cast<int>(tiles.size()) - 1; i++) {
         int dx1 = tiles[i].x - tiles[i - 1].x;
@@ -17,11 +18,11 @@ void Path::setPathTiles(const std::vector<sf::Vector2i>& tiles) {
         int dy2 = tiles[i + 1].y - tiles[i].y;
 
         if (dx1 != dx2 || dy1 != dy2) {
-            waypoints.push_back({tiles[i].x * tileSize, tiles[i].y * tileSize});
+            waypoints.push_back({tiles[i].x * tileSize + halfTile, tiles[i].y * tileSize + halfTile});
         }
     }
 
-    waypoints.push_back({tiles.back().x * tileSize, tiles.back().y * tileSize});
+    waypoints.push_back({tiles.back().x * tileSize + halfTile, tiles.back().y * tileSize + halfTile});
 
     shapes.clear();
     for (const auto& coord : tiles) {

@@ -1,5 +1,7 @@
 #include "ObjectFactory.h"
 #include "FPSCounter.h"
+#include "PlayerHUD.h"
+#include "WaveHUD.h"
 #include "Player.h"
 #include "GameManager.h"
 #include "Tile.h"
@@ -18,6 +20,7 @@ std::shared_ptr<Player> ObjectFactory::createPlayer() {
     auto player = std::make_shared<Player>([this]() {
         if (this->gameManager) this->gameManager->triggerGameOver();
     });
+    if (gameManager) gameManager->setPlayer(player.get());
     return player;
 }
 
@@ -38,9 +41,11 @@ std::shared_ptr<Monster> ObjectFactory::createMonster(const Path* path, MonsterT
 
     auto monster = std::make_shared<Monster>(desc);
     monster->setPath(path);
-
-    if (gameManager) gameManager->addRoutine(monster);
-    if (renderer)    renderer->addRenderable(monster);
+    if (gameManager) {
+        monster->setOnReachedEnd([gm = gameManager]() { gm->dealDamageToPlayer(1); });
+        gameManager->addRoutine(monster);
+    }
+    if (renderer) renderer->addRenderable(monster);
 
     return monster;
 }
@@ -101,4 +106,16 @@ std::shared_ptr<FPSCounter> ObjectFactory::createFPSCounter() {
     if (gameManager) gameManager->addRoutine(obj);
     if (renderer)    renderer->addRenderable(obj);
     return obj;
+}
+
+std::shared_ptr<PlayerHUD> ObjectFactory::createPlayerHUD(const Player* player) {
+    auto hud = std::make_shared<PlayerHUD>(player);
+    if (renderer) renderer->addRenderable(hud);
+    return hud;
+}
+
+std::shared_ptr<WaveHUD> ObjectFactory::createWaveHUD(const Wave* wave) {
+    auto hud = std::make_shared<WaveHUD>(wave);
+    if (renderer) renderer->addRenderable(hud);
+    return hud;
 }

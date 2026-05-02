@@ -9,6 +9,7 @@ A 2D tower defense game written in **C++17** using **SFML 2.6.x**. Players place
 ## Architecture
 
 All source lives in `src/` as a single flat directory. The game loop in `main.cpp` wires together these systems:
+ttf, csv파일들은 `data/` 에 있다.
 
 ### Core Systems
 

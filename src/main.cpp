@@ -18,7 +18,9 @@ int main() {
 
     auto player = ObjectFactory::getInstance().createPlayer();
     auto map    = ObjectFactory::getInstance().createMap(26, 15);
-    auto wave = ObjectFactory::getInstance().createWave(&map->getPath());
+    auto wave      = ObjectFactory::getInstance().createWave(&map->getPath());
+    auto playerHud = ObjectFactory::getInstance().createPlayerHUD(player.get());
+    auto waveHud   = ObjectFactory::getInstance().createWaveHUD(wave.get());
 
 
     while (renderer.isWindowOpen()) {
