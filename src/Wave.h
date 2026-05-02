@@ -2,9 +2,7 @@
 
 #include "IRoutine.h"
 #include "WaveDescription.h"
-#include "MonsterDescription.h"
 #include "WaveParser.h"
-#include <map>
 #include <memory>
 #include <vector>
 
@@ -16,7 +14,6 @@ class Wave : public IRoutine {
 private:
     int level;
     WaveDescription description;
-    std::map<MonsterType, MonsterDescription> monsterStats;
     WaveParser parser;
     std::weak_ptr<WaveStartButton> waveStartButton;
     int spawnIndex;

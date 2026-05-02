@@ -4,24 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A 2D tower defense game written in **C++17** using **SFML 3.0.2**. Players place towers on a 26×15 grid map to stop waves of monsters from reaching the end of a path.
-
-## Build
-
-**Compiler:** `C:\msys64\ucrt64\bin\g++.exe` (MSYS2 GCC)  
-**SFML:** installed at `C:\SFML-3.0.2`
-
-Build command (matches `.vscode/tasks.json`):
-```bash
-g++.exe -fdiagnostics-color=always -g src/*.cpp -o $ood.exe \
-  -I C:/SFML-3.0.2/include \
-  -L C:/SFML-3.0.2/lib \
-  -lsfml-graphics -lsfml-window -lsfml-system
-```
-
-In VS Code: `Ctrl+Shift+B` triggers the build task. `F5` builds and launches the debugger (gdb).
-
-No test framework or linting tooling is configured.
+A 2D tower defense game written in **C++17** using **SFML 2.6.x**. Players place towers on a 26×15 grid map to stop waves of monsters from reaching the end of a path.
 
 ## Architecture
 
@@ -29,14 +12,14 @@ All source lives in `src/` as a single flat directory. The game loop in `main.cp
 
 ### Core Systems
 
-| Class | Role                                                                                                                               |
-|---|------------------------------------------------------------------------------------------------------------------------------------|
-| `GameManager` | Owns every live `GameObject`; drives update ticks; tracks state (Running / GameOver / Victory)                                     |
-| `Renderer` | SFML window; renders objects sorted by `RenderLayer` (Background → Entity → Projectile → UI)                                       |
-| `InputManager` | Routes mouse/keyboard events to `IClickable` objects                                                                               |
+| Class | Role                                                                                                                             |
+|---|----------------------------------------------------------------------------------------------------------------------------------|
+| `GameManager` | Owns every live `GameObject`, `IRoutine` drives update ticks; tracks state (Running / GameOver / Victory)                        |
+| `Renderer` | SFML window; renders objects sorted by `RenderLayer` (Background → Entity → Projectile → UI)                                     |
+| `InputManager` | Routes mouse/keyboard events to `IClickable` objects                                                                             |
 | `ObjectFactory` | Singleton factory — always create objects here with singleton so they are registered in `GameManager` and `Renderer` automatically |
-| `Time` | 정적 deltaTime 제공자. 매 프레임 `time.update()` 호출 → `Time::getDeltaTime()`으로 조회                                                           |
-| `Timer` | 쿨다운/지연 측정 유틸리티 (`Timer.h`). `IRoutine` 상속. Wave 스포닝 등 내부 타이밍에 사용                                                                   |
+| `Time` | 정적 deltaTime 제공자. 매 프레임 `time.update()` 호출 → `Time::getDeltaTime()`으로 조회                                                         |
+| `Timer` | 쿨다운/지연 측정 유틸리티 (`Timer.h`). `IRoutine` 상속. Wave 스포닝 등 내부 타이밍에 사용                                                                 |
 
 ### GameObject Hierarchy
 

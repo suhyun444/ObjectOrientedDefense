@@ -19,7 +19,6 @@ Wave::Wave(const Path* path)
       spawningComplete(true),
       spawnElapsed(0.f),
       path(path) {
-    monsterStats = parser.parseMonsterStats("data/monster_stats.csv");
     waveStartButton = ObjectFactory::getInstance().createWaveStartButton(this);
 }
 
@@ -51,11 +50,7 @@ int Wave::GetLevel() const {
 void Wave::spawnMonster() {
     const SpawnEvent& ev = description.spawns[spawnIndex];
 
-    MonsterDescription desc;
-    auto it = monsterStats.find(ev.type);
-    if (it != monsterStats.end()) desc = it->second;
-
-    auto monster = ObjectFactory::getInstance().createMonster(path, desc);
+    auto monster = ObjectFactory::getInstance().createMonster(path, ev.type);
     monsters.push_back(monster);
 
     std::cout << "[Wave " << level << "] Spawn : " << monsterTypeName(ev.type)

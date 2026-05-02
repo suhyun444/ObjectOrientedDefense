@@ -31,7 +31,11 @@ std::shared_ptr<Tile> ObjectFactory::createTile(int gridX, int gridY) {
     return tile;
 }
 
-std::shared_ptr<Monster> ObjectFactory::createMonster(const Path* path, const MonsterDescription& desc) {
+std::shared_ptr<Monster> ObjectFactory::createMonster(const Path* path, MonsterType type) {
+    MonsterDescription desc;
+    auto it = monsterStats.find(type);
+    if (it != monsterStats.end()) desc = it->second;
+
     auto monster = std::make_shared<Monster>(desc);
     monster->setPath(path);
 
