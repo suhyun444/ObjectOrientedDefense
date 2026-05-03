@@ -51,7 +51,7 @@ void WaveStartButton::updateVisual() {
     else
     {
         shape.setFillColor(sf::Color(34, 139, 34));
-        label.setString(" Wave " + std::to_string(wave->GetLevel()) + " Start");
+        label.setString(" Wave " + std::to_string(wave->GetLevel() + 1) + " Start");
     }
     label.setPosition(BTN_X + 10.f, BTN_Y + 14.f);
 }

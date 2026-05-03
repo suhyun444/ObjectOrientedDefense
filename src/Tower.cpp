@@ -17,7 +17,9 @@ Tower::Tower(const TowerDescription& desc)
 }
 
 void Tower::upgrade() {
-    if (!isMaxLevel()) ++level;
+    if (isMaxLevel()) return;
+    ++level;
+    description.damage += description.damagePerLevel;
 }
 
 void Tower::kill() {
