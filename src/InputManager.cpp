@@ -2,6 +2,10 @@
 
 InputManager::InputManager(sf::RenderWindow& window) : window(window) {}
 
+sf::Vector2i InputManager::getMousePosition() const {
+    return sf::Mouse::getPosition(window);
+}
+
 void InputManager::addClickable(const std::shared_ptr<IClickable>& clickable) {
     if (!clickable) {
         return;

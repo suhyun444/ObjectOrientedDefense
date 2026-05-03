@@ -16,6 +16,8 @@ public:
     void addClickable(const std::shared_ptr<IClickable>& clickable);
     void clearClickables();
 
+    sf::Vector2i getMousePosition() const;
+
     void processInput();
     bool handleEvent(const sf::Event& event);
 };

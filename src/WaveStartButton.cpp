@@ -15,7 +15,7 @@ WaveStartButton::WaveStartButton(Wave* wave)
     shape.setSize({BTN_WIDTH, BTN_HEIGHT});
     shape.setPosition(BTN_X, BTN_Y);
 
-    font.loadFromFile("C:/Windows/Fonts/arial.ttf");
+    font.loadFromFile("data/DungGeunMo.ttf");
     label.setFont(font);
     label.setCharacterSize(16);
     label.setFillColor(sf::Color::White);
@@ -46,12 +46,12 @@ void WaveStartButton::update() {
 void WaveStartButton::updateVisual() {
     if (!wave->isComplete()) {
         shape.setFillColor(sf::Color(100, 100, 100));
-        label.setString("  진행 중...");
+        label.setString("  In Progress...");
     }
     else
     {
         shape.setFillColor(sf::Color(34, 139, 34));
-        label.setString(" Wave " + std::to_string(wave->GetLevel()) + " 시작");
+        label.setString(" Wave " + std::to_string(wave->GetLevel()) + " Start");
     }
     label.setPosition(BTN_X + 10.f, BTN_Y + 14.f);
 }

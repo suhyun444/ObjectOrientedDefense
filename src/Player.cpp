@@ -3,7 +3,7 @@
 #include <iostream>
 
 Player::Player(std::function<void()> deathCallback)
-    : hp(100), gold(0), alive(true), onDeathCallback(deathCallback) {}
+    : hp(100), gold(10000), alive(true), onDeathCallback(deathCallback) {}
 
 int Player::getHp()   const { return hp; }
 int Player::getGold() const { return gold; }
@@ -39,7 +39,7 @@ void Player::buildTower(Tower* tower) {
 
 void Player::upgradeTower(Tower* tower) {
     if (tower) {
-        tower->upgradeLevel();
+        tower->upgrade();
     }
 }
 
