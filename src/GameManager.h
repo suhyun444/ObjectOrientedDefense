@@ -4,6 +4,7 @@
 #include "IRoutine.h"
 
 class Player;
+class Monster;
 
 class GameManager {
 public:
@@ -25,4 +26,5 @@ public:
     void triggerGameOver();
     void triggerVictory();
     void tick();
+    std::vector<std::shared_ptr<Monster>> getAliveMonsters() const;
 };

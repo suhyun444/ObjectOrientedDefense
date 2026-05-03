@@ -59,6 +59,7 @@ public:
     std::shared_ptr<Monster>         createMonster(const Path* path, MonsterType type = MonsterType::Goblin);
     std::shared_ptr<Tower>           createTower(TowerType type, Tile* tile);
     std::shared_ptr<Projectile>      createProjectile(const std::shared_ptr<Monster>& target, int damage, float x, float y);
+    void                             registerProjectile(const std::shared_ptr<Projectile>& projectile);
     std::shared_ptr<Wave>            createWave(const Path* path);
     std::shared_ptr<WaveStartButton> createWaveStartButton(Wave* wave);
     std::shared_ptr<Path>            createPath(const std::vector<sf::Vector2i>& coords);

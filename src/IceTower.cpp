@@ -1,5 +1,6 @@
 #include "IceTower.h"
-#include "Projectile.h"
+#include "IceProjectile.h"
+#include "ObjectFactory.h"
 
 IceTower::IceTower() {
     description = {
@@ -9,15 +10,16 @@ IceTower::IceTower() {
 }
 
 std::shared_ptr<Monster> IceTower::getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const {
-    (void)monsters;
-    return nullptr;
+    return findMostAdvancedTarget(monsters);
 }
 
 void IceTower::fire(const std::shared_ptr<Monster>& target) {
-    (void)target;
+    createProjectile(target);
 }
 
 std::shared_ptr<Projectile> IceTower::createProjectile(const std::shared_ptr<Monster>& target) {
-    (void)target;
-    return nullptr;
+    auto proj = std::make_shared<IceProjectile>(target, description.damage);
+    proj->setPosition(position.x, position.y);
+    ObjectFactory::getInstance().registerProjectile(proj);
+    return proj;
 }

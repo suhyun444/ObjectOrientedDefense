@@ -1,5 +1,6 @@
 #include "BasicTower.h"
-#include "Projectile.h"
+#include "NormalProjectile.h"
+#include "ObjectFactory.h"
 
 BasicTower::BasicTower() {
     description = {
@@ -9,15 +10,16 @@ BasicTower::BasicTower() {
 }
 
 std::shared_ptr<Monster> BasicTower::getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const {
-    (void)monsters;
-    return nullptr;
+    return findMostAdvancedTarget(monsters);
 }
 
 void BasicTower::fire(const std::shared_ptr<Monster>& target) {
-    (void)target;
+    createProjectile(target);
 }
 
 std::shared_ptr<Projectile> BasicTower::createProjectile(const std::shared_ptr<Monster>& target) {
-    (void)target;
-    return nullptr;
+    auto proj = std::make_shared<NormalProjectile>(target, description.damage);
+    proj->setPosition(position.x, position.y);
+    ObjectFactory::getInstance().registerProjectile(proj);
+    return proj;
 }

@@ -15,6 +15,8 @@ private:
     std::function<void()> onReachedEnd;
     int waypointIndex;
     sf::CircleShape shape;
+    float slowTimer = 0.f;
+    float speedMultiplier = 1.f;
 
 public:
     explicit Monster(const MonsterDescription& description = MonsterDescription{});
@@ -22,6 +24,8 @@ public:
     void setPath(const Path* newPath);
     void setOnReachedEnd(std::function<void()> callback);
     void takeDamage(int damage);
+    void applySlow(float factor, float duration);
+    int getWaypointIndex() const { return waypointIndex; }
 
     void update() override;
     bool isAlive() const override;

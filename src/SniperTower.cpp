@@ -1,5 +1,6 @@
 #include "SniperTower.h"
-#include "Projectile.h"
+#include "NormalProjectile.h"
+#include "ObjectFactory.h"
 
 SniperTower::SniperTower() {
     description = {
@@ -9,15 +10,16 @@ SniperTower::SniperTower() {
 }
 
 std::shared_ptr<Monster> SniperTower::getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const {
-    (void)monsters;
-    return nullptr;
+    return findMostAdvancedTarget(monsters);
 }
 
 void SniperTower::fire(const std::shared_ptr<Monster>& target) {
-    (void)target;
+    createProjectile(target);
 }
 
 std::shared_ptr<Projectile> SniperTower::createProjectile(const std::shared_ptr<Monster>& target) {
-    (void)target;
-    return nullptr;
+    auto proj = std::make_shared<NormalProjectile>(target, description.damage, 400.f);
+    proj->setPosition(position.x, position.y);
+    ObjectFactory::getInstance().registerProjectile(proj);
+    return proj;
 }
