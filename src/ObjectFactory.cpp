@@ -1,5 +1,4 @@
 #include "ObjectFactory.h"
-#include "ExplosionEffect.h"
 #include "FPSCounter.h"
 #include "PlayerHUD.h"
 #include "WaveHUD.h"
