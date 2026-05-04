@@ -1,5 +1,8 @@
 #include "Tower.h"
 #include "Monster.h"
+#include "Time.h"
+#include <cmath>
+#include <limits>
 
 static sf::Font& getSharedFont() {
     static sf::Font font;
@@ -30,7 +33,39 @@ void Tower::setGridPosition(sf::Vector2i pos) {
     gridPosition = pos;
 }
 
-void Tower::update() {}
+void Tower::setMonstersProvider(std::function<std::vector<std::shared_ptr<Monster>>()> fn) {
+    monstersProvider = std::move(fn);
+}
+
+void Tower::update() {
+    fireCooldown -= Time::getDeltaTime();
+    if (fireCooldown > 0.f || !monstersProvider) return;
+    auto target = getTarget(monstersProvider());
+    if (!target) return;
+    fire(target);
+    fireCooldown = 1.0f / description.fireRate;
+}
+
+std::shared_ptr<Monster> Tower::findMostAdvancedTarget(
+    const std::vector<std::shared_ptr<Monster>>& monsters) const
+{
+    std::shared_ptr<Monster> best;
+    int bestWP = -1;
+    float bestDist = std::numeric_limits<float>::max();
+    for (const auto& m : monsters) {
+        sf::Vector2f diff = m->getPosition() - position;
+        float dist = std::sqrt(diff.x * diff.x + diff.y * diff.y);
+        if (dist > description.range) continue;
+        int wp = m->getWaypointIndex();
+        float distToNext = m->getDistanceToNextWaypoint();
+        if (wp > bestWP || (wp == bestWP && distToNext < bestDist)) {
+            bestWP = wp;
+            bestDist = distToNext;
+            best = m;
+        }
+    }
+    return best;
+}
 
 bool Tower::isAlive() const {
     return alive;

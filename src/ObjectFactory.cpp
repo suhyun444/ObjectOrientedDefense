@@ -13,11 +13,11 @@
 #include "SniperTower.h"
 #include "ExplosionTower.h"
 #include "Projectile.h"
+#include "NormalProjectile.h"
 #include "Wave.h"
 #include "WaveStartButton.h"
 #include "Map.h"
 #include "Path.h"
-#include "ProjectileDescription.h"
 #include "TowerSelectPanel.h"
 #include "TowerActionMenu.h"
 
@@ -85,6 +85,8 @@ std::shared_ptr<Tower> ObjectFactory::createTower(TowerType type, Tile* tile) {
     auto pos = tile->getPosition();
     tower->setPosition(pos.x, pos.y);
     tower->setGridPosition({ tile->getGridX(), tile->getGridY() });
+    if (gameManager)
+        tower->setMonstersProvider([gm = gameManager] { return gm->getAliveMonsters(); });
 
     if (gameManager) gameManager->addRoutine(tower);
     if (renderer)    renderer->addRenderable(tower);
@@ -137,16 +139,17 @@ std::shared_ptr<TowerActionMenu> ObjectFactory::createTowerActionMenu(Tower* tow
 }
 
 std::shared_ptr<Projectile> ObjectFactory::createProjectile(const std::shared_ptr<Monster>& target, int damage, float x, float y) {
-    ProjectileDescription projectileDescription;
-    projectileDescription.damage = damage;
-    auto projectile = std::make_shared<Projectile>(target, projectileDescription);
+    auto projectile = std::make_shared<NormalProjectile>(target, damage);
     projectile->setPosition(x, y);
-
-    if (gameManager) gameManager->addRoutine(projectile);
-    if (renderer)    renderer->addRenderable(projectile);
-
+    registerProjectile(projectile);
     return projectile;
 }
+
+void ObjectFactory::registerProjectile(const std::shared_ptr<Projectile>& projectile) {
+    if (gameManager) gameManager->addRoutine(projectile);
+    if (renderer)    renderer->addRenderable(projectile);
+}
+
 
 std::shared_ptr<Wave> ObjectFactory::createWave(const Path* path) {
     auto wave = std::make_shared<Wave>(path);

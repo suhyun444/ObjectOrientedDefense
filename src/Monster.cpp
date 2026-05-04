@@ -39,8 +39,23 @@ void Monster::takeDamage(int damage) {
     }
 }
 
+void Monster::applySlow(float factor, float duration) {
+    speedMultiplier = factor;
+    slowTimer = duration;
+}
+
+float Monster::getDistanceToNextWaypoint() const {
+    if (!path) return 0.f;
+    sf::Vector2f diff = path->getNextPoint(waypointIndex) - position;
+    return std::hypot(diff.x, diff.y);
+}
+
 void Monster::update() {
     if (!alive) return;
+    if (slowTimer > 0.f) {
+        slowTimer -= Time::getDeltaTime();
+        if (slowTimer <= 0.f) speedMultiplier = 1.f;
+    }
     moveAlongPath();
 }
 
@@ -67,7 +82,7 @@ void Monster::moveAlongPath() {
     sf::Vector2f target = path->getNextPoint(waypointIndex);
     sf::Vector2f dir    = target - position;
     float dist = std::hypot(dir.x, dir.y);
-    float step = description.speed * Time::getDeltaTime();
+    float step = description.speed * speedMultiplier * Time::getDeltaTime();
 
     if (dist <= step) {
         position = target;

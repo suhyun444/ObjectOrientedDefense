@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -19,9 +20,11 @@ protected:
 
 private:
     bool alive = true;
+    float fireCooldown = 0.f;
     sf::RectangleShape shape;
 
 public:
+    std::function<std::vector<std::shared_ptr<Monster>>()> monstersProvider;
     Tower(const TowerDescription& desc = TowerDescription{});
     virtual ~Tower() = default;
 
@@ -33,11 +36,15 @@ public:
     void upgrade();
     void kill();
     void setGridPosition(sf::Vector2i pos);
+    void setMonstersProvider(std::function<std::vector<std::shared_ptr<Monster>>()> fn);
 
     void         update()                       override;
     bool         isAlive()                const override;
     void         render(sf::RenderWindow& win)  override;
     RenderLayer  getLayer()               const override;
+
+protected:
+    std::shared_ptr<Monster> findMostAdvancedTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const;
 
 private:
     virtual std::shared_ptr<Monster>     getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const = 0;

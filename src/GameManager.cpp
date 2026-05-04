@@ -1,5 +1,6 @@
 #include "GameManager.h"
 #include "Player.h"
+#include "Monster.h"
 #include <iostream>
 #include <algorithm>
 
@@ -27,6 +28,19 @@ void GameManager::triggerGameOver() {
 void GameManager::triggerVictory() {
     currentState = GameState::Victory;
     std::cout << "[System] Victory! 모든 업데이트를 중단하고 팝업을 띄웁니다.\n";
+}
+
+std::vector<std::shared_ptr<Monster>> GameManager::getAliveMonsters() const {
+    std::vector<std::shared_ptr<Monster>> result;
+    for (const auto& r : routines) {
+        if (auto m = std::dynamic_pointer_cast<Monster>(r))
+            if (m->isAlive()) result.push_back(m);
+    }
+    for (const auto& r : pendingAdds) {
+        if (auto m = std::dynamic_pointer_cast<Monster>(r))
+            if (m->isAlive()) result.push_back(m);
+    }
+    return result;
 }
 
 void GameManager::tick() {
