@@ -1,4 +1,5 @@
 #include "ObjectFactory.h"
+#include "ExplosionEffect.h"
 #include "FPSCounter.h"
 #include "PlayerHUD.h"
 #include "WaveHUD.h"
@@ -148,6 +149,11 @@ std::shared_ptr<Projectile> ObjectFactory::createProjectile(const std::shared_pt
 void ObjectFactory::registerProjectile(const std::shared_ptr<Projectile>& projectile) {
     if (gameManager) gameManager->addRoutine(projectile);
     if (renderer)    renderer->addRenderable(projectile);
+}
+
+void ObjectFactory::registerEffect(const std::shared_ptr<GameObject>& effect) {
+    if (gameManager) gameManager->addRoutine(effect);
+    if (renderer)    renderer->addRenderable(effect);
 }
 
 

@@ -1,4 +1,5 @@
 #include "ExplosionProjectile.h"
+#include "ExplosionEffect.h"
 #include "Monster.h"
 #include "ObjectFactory.h"
 #include <cmath>
@@ -17,4 +18,5 @@ void ExplosionProjectile::applyEffect(const std::shared_ptr<Monster>&) {
             if (dist <= RADIUS) m->takeDamage(damage);
         }
     }
+    ObjectFactory::getInstance().registerEffect(std::make_shared<ExplosionEffect>(position));
 }
