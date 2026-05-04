@@ -2,6 +2,7 @@
 #include "Monster.h"
 #include "Time.h"
 #include <cmath>
+#include <limits>
 
 static sf::Font& getSharedFont() {
     static sf::Font font;
@@ -50,13 +51,16 @@ std::shared_ptr<Monster> Tower::findMostAdvancedTarget(
 {
     std::shared_ptr<Monster> best;
     int bestWP = -1;
+    float bestDist = std::numeric_limits<float>::max();
     for (const auto& m : monsters) {
         sf::Vector2f diff = m->getPosition() - position;
         float dist = std::sqrt(diff.x * diff.x + diff.y * diff.y);
         if (dist > description.range) continue;
         int wp = m->getWaypointIndex();
-        if (wp > bestWP) {
+        float distToNext = m->getDistanceToNextWaypoint();
+        if (wp > bestWP || (wp == bestWP && distToNext < bestDist)) {
             bestWP = wp;
+            bestDist = distToNext;
             best = m;
         }
     }

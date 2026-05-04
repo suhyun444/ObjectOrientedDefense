@@ -26,6 +26,7 @@ public:
     void takeDamage(int damage);
     void applySlow(float factor, float duration);
     int getWaypointIndex() const { return waypointIndex; }
+    float getDistanceToNextWaypoint() const;
 
     void update() override;
     bool isAlive() const override;
