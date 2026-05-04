@@ -150,6 +150,11 @@ void ObjectFactory::registerProjectile(const std::shared_ptr<Projectile>& projec
     if (renderer)    renderer->addRenderable(projectile);
 }
 
+void ObjectFactory::registerEffect(const std::shared_ptr<GameObject>& effect) {
+    if (gameManager) gameManager->addRoutine(effect);
+    if (renderer)    renderer->addRenderable(effect);
+}
+
 
 std::shared_ptr<Wave> ObjectFactory::createWave(const Path* path) {
     auto wave = std::make_shared<Wave>(path);
