@@ -24,6 +24,7 @@ private:
     std::vector<std::shared_ptr<Monster>> monsters;
     const Path* path;
     std::function<void(int)> onComplete;
+    std::function<void()> onVictory;
 
 public:
     Wave(const Path* path);
@@ -31,6 +32,7 @@ public:
     bool loadFromFile();
     bool isComplete() const;
     void setOnComplete(std::function<void(int)> callback);
+    void setOnVictory(std::function<void()> callback);
 
     void update() override;
     bool isAlive() const override;

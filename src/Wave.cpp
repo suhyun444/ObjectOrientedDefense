@@ -34,8 +34,7 @@ bool Wave::loadFromFile() {
     description = parser.parseWave(filePath);
 
     if (description.spawns.empty()) {
-        std::cerr << "[Wave " << level << "] 파일 로딩 실패: " << filePath << "\n";
-        std::cout << "!!!!!VICTORY!!!!!! CALL GAMEMANAGER";
+        if (onVictory) onVictory();
         return false;
     }
     spawningComplete = false;
@@ -79,6 +78,10 @@ bool Wave::isComplete() const {
 
 void Wave::setOnComplete(std::function<void(int)> callback) {
     onComplete = std::move(callback);
+}
+
+void Wave::setOnVictory(std::function<void()> callback) {
+    onVictory = std::move(callback);
 }
 
 void Wave::update() {

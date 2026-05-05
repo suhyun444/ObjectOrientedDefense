@@ -28,6 +28,7 @@ class Map;
 class TowerSelectPanel;
 class TowerActionMenu;
 class GoldNotice;
+class GameResultPopup;
 
 class ObjectFactory {
 private:
@@ -39,6 +40,7 @@ private:
     std::weak_ptr<TowerSelectPanel>  activeTowerPanel;
     std::weak_ptr<TowerActionMenu>   activeTowerActionMenu;
     std::weak_ptr<GoldNotice>        activeGoldNotice;
+    std::shared_ptr<GameResultPopup> activeGameResultPopup;
     std::map<MonsterType, MonsterDescription> monsterStats;
 
     ObjectFactory() = default;
@@ -74,4 +76,5 @@ public:
     std::shared_ptr<TowerSelectPanel> createTowerSelectPanel(Tile* tile);
     std::shared_ptr<TowerActionMenu>  createTowerActionMenu(Tower* tower, Tile* tile);
     void                              createGoldNotice();
+    void                              createGameResultPopup(bool isVictory);
 };

@@ -13,6 +13,11 @@ void InputManager::addClickable(const std::shared_ptr<IClickable>& clickable) {
     clickables.push_back(clickable);
 }
 
+void InputManager::addPriorityClickable(const std::shared_ptr<IClickable>& clickable) {
+    if (!clickable) return;
+    clickables.insert(clickables.begin(), clickable);
+}
+
 void InputManager::clearClickables() {
     clickables.clear();
 }

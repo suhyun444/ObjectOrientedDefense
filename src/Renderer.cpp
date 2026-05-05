@@ -35,7 +35,7 @@ void Renderer::drawAll() {
     }
 
     // 3. Z-Index(Layer) 기준으로 정렬 (람다 함수 사용)
-    std::sort(validObjects.begin(), validObjects.end(), 
+    std::stable_sort(validObjects.begin(), validObjects.end(),
         [](const std::shared_ptr<IRenderable>& a, const std::shared_ptr<IRenderable>& b) {
             return static_cast<int>(a->getLayer()) < static_cast<int>(b->getLayer());
         }
