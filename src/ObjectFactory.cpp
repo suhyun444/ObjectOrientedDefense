@@ -21,10 +21,12 @@
 #include "TowerSelectPanel.h"
 #include "TowerActionMenu.h"
 #include "GoldNotice.h"
+#include "GameResultPopup.h"
 
 std::shared_ptr<Player> ObjectFactory::createPlayer() {
     auto p = std::make_shared<Player>([this]() {
-        if (this->gameManager) this->gameManager->triggerGameOver();
+        if (gameManager) gameManager->triggerGameOver();
+        createGameResultPopup(false);
     });
     if (gameManager) gameManager->setPlayer(p.get());
     player = p.get();
@@ -147,6 +149,15 @@ std::shared_ptr<TowerActionMenu> ObjectFactory::createTowerActionMenu(Tower* tow
     return menu;
 }
 
+void ObjectFactory::createGameResultPopup(bool isVictory) {
+    auto popup = std::make_shared<GameResultPopup>(isVictory, [this]() {
+        if (renderer) renderer->getWindow().close();
+    });
+    activeGameResultPopup = popup;
+    if (renderer)     renderer->addRenderable(popup);
+    if (inputManager) inputManager->addPriorityClickable(popup);
+}
+
 void ObjectFactory::createGoldNotice() {
     if (auto existing = activeGoldNotice.lock()) existing->kill();
     auto notice = std::make_shared<GoldNotice>();
@@ -178,6 +189,10 @@ std::shared_ptr<Wave> ObjectFactory::createWave(const Path* path) {
 
     if (gameManager) {
         wave->setOnComplete([gm = gameManager](int gold) { gm->addGoldToPlayer(gold); });
+        wave->setOnVictory([this]() {
+            if (gameManager) gameManager->triggerVictory();
+            createGameResultPopup(true);
+        });
         gameManager->addRoutine(wave);
     }
 

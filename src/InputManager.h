@@ -14,6 +14,7 @@ public:
     explicit InputManager(sf::RenderWindow& window);
 
     void addClickable(const std::shared_ptr<IClickable>& clickable);
+    void addPriorityClickable(const std::shared_ptr<IClickable>& clickable);
     void clearClickables();
 
     sf::Vector2i getMousePosition() const;
