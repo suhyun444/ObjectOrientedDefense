@@ -12,7 +12,7 @@ class InputManager;
 
 class TowerSelectPanel : public IRoutine, public IRenderable, public IClickable {
 public:
-    std::function<void(TowerType, int)> onSelectTower;
+    std::function<bool(TowerType, int)> onSelectTower;
     std::function<void()>               onClose;
 
     TowerSelectPanel(Tile* tile, InputManager* im);

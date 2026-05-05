@@ -20,6 +20,7 @@
 #include "Path.h"
 #include "TowerSelectPanel.h"
 #include "TowerActionMenu.h"
+#include "GoldNotice.h"
 
 std::shared_ptr<Player> ObjectFactory::createPlayer() {
     auto p = std::make_shared<Player>([this]() {
@@ -104,11 +105,15 @@ std::shared_ptr<TowerSelectPanel> ObjectFactory::createTowerSelectPanel(Tile* ti
     };
 
     panel->onSelectTower = [this, tile](TowerType type, int cost) {
-        if (!player || !player->useGold(cost)) return;
+        if (!player || !player->useGold(cost)) {
+            createGoldNotice();
+            return false;
+        }
         auto tower = createTower(type, tile);
         tile->setTower(tower.get());
         tile->setHighlighted(false);
         selectedTile = nullptr;
+        return true;
     };
 
     if (gameManager)  gameManager->addRoutine(panel);
@@ -122,7 +127,10 @@ std::shared_ptr<TowerActionMenu> ObjectFactory::createTowerActionMenu(Tower* tow
     auto menu = std::make_shared<TowerActionMenu>(tower, tile, inputManager);
 
     menu->onUpgrade = [this, tower]() {
-        if (!player || !player->useGold(tower->getDescription().upgradeCost)) return;
+        if (!player || !player->useGold(tower->getDescription().upgradeCost)) {
+            createGoldNotice();
+            return;
+        }
         tower->upgrade();
     };
 
@@ -137,6 +145,14 @@ std::shared_ptr<TowerActionMenu> ObjectFactory::createTowerActionMenu(Tower* tow
     if (inputManager) inputManager->addClickable(menu);
 
     return menu;
+}
+
+void ObjectFactory::createGoldNotice() {
+    if (auto existing = activeGoldNotice.lock()) existing->kill();
+    auto notice = std::make_shared<GoldNotice>();
+    activeGoldNotice = notice;
+    if (gameManager) gameManager->addRoutine(notice);
+    if (renderer)    renderer->addRenderable(notice);
 }
 
 std::shared_ptr<Projectile> ObjectFactory::createProjectile(const std::shared_ptr<Monster>& target, int damage, float x, float y) {
