@@ -27,6 +27,7 @@ class Path;
 class Map;
 class TowerSelectPanel;
 class TowerActionMenu;
+class GoldNotice;
 
 class ObjectFactory {
 private:
@@ -37,6 +38,7 @@ private:
     Tile*         selectedTile = nullptr;
     std::weak_ptr<TowerSelectPanel>  activeTowerPanel;
     std::weak_ptr<TowerActionMenu>   activeTowerActionMenu;
+    std::weak_ptr<GoldNotice>        activeGoldNotice;
     std::map<MonsterType, MonsterDescription> monsterStats;
 
     ObjectFactory() = default;
@@ -71,4 +73,5 @@ public:
     std::shared_ptr<WaveHUD>         createWaveHUD(const Wave* wave);
     std::shared_ptr<TowerSelectPanel> createTowerSelectPanel(Tile* tile);
     std::shared_ptr<TowerActionMenu>  createTowerActionMenu(Tower* tower, Tile* tile);
+    void                              createGoldNotice();
 };

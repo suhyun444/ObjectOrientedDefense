@@ -137,8 +137,10 @@ bool TowerSelectPanel::onClick() {
         auto r = cardRect(i);
         if (pos.x >= r.left && pos.x < r.left + r.width &&
             pos.y >= r.top  && pos.y < r.top  + r.height) {
-            if (onSelectTower) onSelectTower(types[i], descriptions[i].cost);
-            alive = false;
+            if (onSelectTower) {
+                if (onSelectTower(types[i], descriptions[i].cost))
+                    alive = false;
+            }
             return true;
         }
     }
