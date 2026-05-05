@@ -150,11 +150,12 @@ std::shared_ptr<TowerActionMenu> ObjectFactory::createTowerActionMenu(Tower* tow
 }
 
 void ObjectFactory::createGameResultPopup(bool isVictory) {
-    auto popup = std::make_shared<GameResultPopup>(isVictory, [this]() {
+    if (!renderer) return;
+    auto popup = std::make_shared<GameResultPopup>(isVictory, renderer->getWindow(), [this]() {
         if (renderer) renderer->getWindow().close();
     });
     activeGameResultPopup = popup;
-    if (renderer)     renderer->addRenderable(popup);
+    renderer->addRenderable(popup);
     if (inputManager) inputManager->addPriorityClickable(popup);
 }
 

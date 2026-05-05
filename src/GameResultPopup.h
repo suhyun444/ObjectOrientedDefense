@@ -17,7 +17,7 @@ class GameResultPopup : public IRenderable, public IClickable {
     mutable sf::Vector2i lastMousePos;
 
 public:
-    GameResultPopup(bool isVictory, std::function<void()> onYes);
+    GameResultPopup(bool isVictory, sf::RenderWindow& window, std::function<void()> onYes);
 
     void render(sf::RenderWindow& window) override;
     RenderLayer getLayer() const override { return RenderLayer::UI; }

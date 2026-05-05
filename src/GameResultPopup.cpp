@@ -1,28 +1,29 @@
 #include "GameResultPopup.h"
 #include <cstring>
+#include <iostream>
 
-static constexpr float WIN_W  = 1530.f;
-static constexpr float WIN_H  = 750.f;
-static constexpr float PANEL_W = 400.f;
-static constexpr float PANEL_H = 260.f;
-static constexpr float PANEL_X = (WIN_W - PANEL_W) / 2.f;
-static constexpr float PANEL_Y = (WIN_H - PANEL_H) / 2.f;
-static constexpr float BTN_W  = 160.f;
-static constexpr float BTN_H  = 50.f;
-static constexpr float BTN_X  = PANEL_X + (PANEL_W - BTN_W) / 2.f;
-static constexpr float BTN_Y  = PANEL_Y + PANEL_H - BTN_H - 25.f;
-
-GameResultPopup::GameResultPopup(bool isVictory, std::function<void()> onYes)
+GameResultPopup::GameResultPopup(bool isVictory, sf::RenderWindow& window, std::function<void()> onYes)
     : onYes(std::move(onYes))
-    , yesBounds(BTN_X, BTN_Y, BTN_W, BTN_H)
 {
-    font.loadFromFile("data/DungGeunMo.ttf");
+    if (!font.loadFromFile("data/DungGeunMo.ttf"))
+        std::cerr << "[GameResultPopup] 폰트 로딩 실패\n";
 
-    overlay.setSize({ WIN_W, WIN_H });
+    const float winW   = static_cast<float>(window.getSize().x);
+    const float winH   = static_cast<float>(window.getSize().y);
+    const float panelW = 400.f, panelH = 260.f;
+    const float panelX = (winW - panelW) / 2.f;
+    const float panelY = (winH - panelH) / 2.f;
+    const float btnW   = 160.f, btnH = 50.f;
+    const float btnX   = panelX + (panelW - btnW) / 2.f;
+    const float btnY   = panelY + panelH - btnH - 25.f;
+
+    yesBounds = { btnX, btnY, btnW, btnH };
+
+    overlay.setSize({ winW, winH });
     overlay.setFillColor(sf::Color(0, 0, 0, 180));
 
-    panel.setSize({ PANEL_W, PANEL_H });
-    panel.setPosition(PANEL_X, PANEL_Y);
+    panel.setSize({ panelW, panelH });
+    panel.setPosition(panelX, panelY);
     panel.setFillColor(sf::Color(30, 30, 30));
 
     titleText.setFont(font);
@@ -32,7 +33,7 @@ GameResultPopup::GameResultPopup(bool isVictory, std::function<void()> onYes)
     {
         sf::FloatRect b = titleText.getLocalBounds();
         titleText.setOrigin(b.left + b.width / 2.f, b.top + b.height / 2.f);
-        titleText.setPosition(PANEL_X + PANEL_W / 2.f, PANEL_Y + 70.f);
+        titleText.setPosition(panelX + panelW / 2.f, panelY + 70.f);
     }
 
     const char* subStr = u8"게임을 종료할까요?";
@@ -43,11 +44,11 @@ GameResultPopup::GameResultPopup(bool isVictory, std::function<void()> onYes)
     {
         sf::FloatRect b = subtitleText.getLocalBounds();
         subtitleText.setOrigin(b.left + b.width / 2.f, b.top + b.height / 2.f);
-        subtitleText.setPosition(PANEL_X + PANEL_W / 2.f, PANEL_Y + 140.f);
+        subtitleText.setPosition(panelX + panelW / 2.f, panelY + 140.f);
     }
 
-    yesButton.setSize({ BTN_W, BTN_H });
-    yesButton.setPosition(BTN_X, BTN_Y);
+    yesButton.setSize({ btnW, btnH });
+    yesButton.setPosition(btnX, btnY);
     yesButton.setFillColor(sf::Color(60, 120, 200));
 
     yesText.setFont(font);
@@ -57,7 +58,7 @@ GameResultPopup::GameResultPopup(bool isVictory, std::function<void()> onYes)
     {
         sf::FloatRect b = yesText.getLocalBounds();
         yesText.setOrigin(b.left + b.width / 2.f, b.top + b.height / 2.f);
-        yesText.setPosition(BTN_X + BTN_W / 2.f, BTN_Y + BTN_H / 2.f);
+        yesText.setPosition(btnX + btnW / 2.f, btnY + btnH / 2.f);
     }
 }
 
