@@ -2,6 +2,7 @@
 #include "Monster.h"
 #include "ObjectFactory.h"
 #include "Time.h"
+#include <algorithm>
 #include <iostream>
 
 static const char* monsterTypeName(MonsterType t) {
@@ -86,16 +87,21 @@ void Wave::update() {
             if (onComplete) onComplete(description.rewardGold);
             rewardGiven = true;
         }
-        return;
+    } else {
+        spawnElapsed += Time::getDeltaTime();
+
+        float interval = description.spawns[spawnIndex].spawnTime;
+        if (spawnElapsed >= interval) {
+            spawnMonster();
+            spawnElapsed = 0.f;
+        }
     }
 
-    spawnElapsed += Time::getDeltaTime();
-
-    float interval = description.spawns[spawnIndex].spawnTime;
-    if (spawnElapsed >= interval) {
-        spawnMonster();
-        spawnElapsed = 0.f;
-    }
+    monsters.erase(
+        std::remove_if(monsters.begin(), monsters.end(),
+            [](const std::shared_ptr<Monster>& m) { return !m->isAlive(); }),
+        monsters.end()
+    );
 }
 
 bool Wave::isAlive() const {
