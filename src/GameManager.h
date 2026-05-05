@@ -21,6 +21,7 @@ public:
 
     void setPlayer(Player* p);
     void dealDamageToPlayer(int damage);
+    void addGoldToPlayer(int amount);
 
     void addRoutine(std::shared_ptr<IRoutine> routine);
     void triggerGameOver();

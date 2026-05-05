@@ -16,6 +16,11 @@ void GameManager::dealDamageToPlayer(int damage) {
     if (player) player->takeDamage(damage);
 }
 
+void GameManager::addGoldToPlayer(int amount) {
+    if (currentState != GameState::Running) return;
+    if (player) player->addGold(amount);
+}
+
 void GameManager::addRoutine(std::shared_ptr<IRoutine> routine) {
     pendingAdds.push_back(routine);
 }

@@ -3,6 +3,7 @@
 #include "IRoutine.h"
 #include "WaveDescription.h"
 #include "WaveParser.h"
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -18,15 +19,18 @@ private:
     std::weak_ptr<WaveStartButton> waveStartButton;
     int spawnIndex;
     bool spawningComplete;
+    bool rewardGiven;
     float spawnElapsed;
     std::vector<std::shared_ptr<Monster>> monsters;
     const Path* path;
+    std::function<void(int)> onComplete;
 
 public:
     Wave(const Path* path);
 
     bool loadFromFile();
     bool isComplete() const;
+    void setOnComplete(std::function<void(int)> callback);
 
     void update() override;
     bool isAlive() const override;

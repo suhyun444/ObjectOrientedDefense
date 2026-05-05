@@ -17,6 +17,7 @@ Wave::Wave(const Path* path)
     : level(0),
       spawnIndex(0),
       spawningComplete(true),
+      rewardGiven(true),
       spawnElapsed(0.f),
       path(path) {
     waveStartButton = ObjectFactory::getInstance().createWaveStartButton(this);
@@ -27,6 +28,7 @@ bool Wave::loadFromFile() {
     spawnIndex = 0;
     spawnElapsed = 0.f;
     monsters.clear();
+    rewardGiven = false;
     std::string filePath = "data/wave_" + std::to_string(level) + ".csv";
     description = parser.parseWave(filePath);
 
@@ -71,11 +73,21 @@ bool Wave::isAllMonstersDefeated() const {
 }
 
 bool Wave::isComplete() const {
-    return spawningComplete && isAllMonstersDefeated();
+    return spawningComplete && isAllMonstersDefeated() && rewardGiven;
+}
+
+void Wave::setOnComplete(std::function<void(int)> callback) {
+    onComplete = std::move(callback);
 }
 
 void Wave::update() {
-    if (spawningComplete) return;
+    if (spawningComplete) {
+        if (!rewardGiven && isAllMonstersDefeated()) {
+            if (onComplete) onComplete(description.rewardGold);
+            rewardGiven = true;
+        }
+        return;
+    }
 
     spawnElapsed += Time::getDeltaTime();
 

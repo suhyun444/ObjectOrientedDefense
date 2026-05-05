@@ -66,6 +66,7 @@ std::shared_ptr<Monster> ObjectFactory::createMonster(const Path* path, MonsterT
     monster->setPath(path);
     if (gameManager) {
         monster->setOnReachedEnd([gm = gameManager]() { gm->dealDamageToPlayer(1); });
+        monster->setOnDefeated([gm = gameManager, gold = desc.rewardGold]() { gm->addGoldToPlayer(gold); });
         gameManager->addRoutine(monster);
     }
     if (renderer) renderer->addRenderable(monster);
@@ -159,7 +160,10 @@ void ObjectFactory::registerEffect(const std::shared_ptr<GameObject>& effect) {
 std::shared_ptr<Wave> ObjectFactory::createWave(const Path* path) {
     auto wave = std::make_shared<Wave>(path);
 
-    if (gameManager) gameManager->addRoutine(wave);
+    if (gameManager) {
+        wave->setOnComplete([gm = gameManager](int gold) { gm->addGoldToPlayer(gold); });
+        gameManager->addRoutine(wave);
+    }
 
     return wave;
 }

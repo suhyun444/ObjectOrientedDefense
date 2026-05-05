@@ -13,6 +13,7 @@ private:
     bool alive;
     const Path* path;
     std::function<void()> onReachedEnd;
+    std::function<void()> onDefeated;
     int waypointIndex;
     sf::CircleShape shape;
     float slowTimer = 0.f;
@@ -23,6 +24,7 @@ public:
 
     void setPath(const Path* newPath);
     void setOnReachedEnd(std::function<void()> callback);
+    void setOnDefeated(std::function<void()> callback);
     void takeDamage(int damage);
     void applySlow(float factor, float duration);
     int getWaypointIndex() const { return waypointIndex; }
