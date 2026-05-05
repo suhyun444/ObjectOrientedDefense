@@ -32,9 +32,14 @@ void Monster::setOnReachedEnd(std::function<void()> callback) {
     onReachedEnd = std::move(callback);
 }
 
+void Monster::setOnDefeated(std::function<void()> callback) {
+    onDefeated = std::move(callback);
+}
+
 void Monster::takeDamage(int damage) {
     health -= damage;
     if (health <= 0) {
+        if (onDefeated) onDefeated();
         alive = false;
     }
 }
