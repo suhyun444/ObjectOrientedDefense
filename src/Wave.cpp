@@ -17,7 +17,7 @@ Wave::Wave(const Path* path)
     : level(0),
       spawnIndex(0),
       spawningComplete(true),
-      rewardGiven(false),
+      rewardGiven(true),
       spawnElapsed(0.f),
       path(path) {
     waveStartButton = ObjectFactory::getInstance().createWaveStartButton(this);
@@ -73,7 +73,7 @@ bool Wave::isAllMonstersDefeated() const {
 }
 
 bool Wave::isComplete() const {
-    return spawningComplete && isAllMonstersDefeated();
+    return spawningComplete && isAllMonstersDefeated() && rewardGiven;
 }
 
 void Wave::setOnComplete(std::function<void(int)> callback) {

@@ -39,8 +39,8 @@ void Monster::setOnDefeated(std::function<void()> callback) {
 void Monster::takeDamage(int damage) {
     health -= damage;
     if (health <= 0) {
-        if (onDefeated) onDefeated();
         alive = false;
+        if (onDefeated) onDefeated();
     }
 }
 
