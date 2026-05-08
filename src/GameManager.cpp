@@ -1,5 +1,5 @@
 #include "GameManager.h"
-#include "Player.h"
+#include "Base.h"
 #include "Monster.h"
 #include <iostream>
 #include <algorithm>
@@ -7,18 +7,18 @@
 // 생성자 초기화
 GameManager::GameManager() : currentState(GameState::Running) {}
 
-void GameManager::setPlayer(Player* p) {
-    player = p;
+void GameManager::setBase(Base* b) {
+    base = b;
 }
 
-void GameManager::dealDamageToPlayer(int damage) {
+void GameManager::dealDamageToBase(int damage) {
     if (currentState != GameState::Running) return;
-    if (player) player->takeDamage(damage);
+    if (base) base->takeDamage(damage);
 }
 
-void GameManager::addGoldToPlayer(int amount) {
+void GameManager::addGoldToBase(int amount) {
     if (currentState != GameState::Running) return;
-    if (player) player->addGold(amount);
+    if (base) base->addGold(amount);
 }
 
 void GameManager::addRoutine(std::shared_ptr<IRoutine> routine) {

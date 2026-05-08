@@ -2,15 +2,15 @@
 #include "IRenderable.h"
 #include <SFML/Graphics.hpp>
 
-class Player;
+class Base;
 
-class PlayerHUD : public IRenderable {
+class BaseHUD : public IRenderable {
 public:
-    explicit PlayerHUD(const Player* player);
+    explicit BaseHUD(const Base* base);
     void render(sf::RenderWindow& window) override;
     RenderLayer getLayer() const override;
 private:
-    const Player* player;
+    const Base* base;
     sf::Font font;
     sf::Text hpText;
     sf::Text goldText;

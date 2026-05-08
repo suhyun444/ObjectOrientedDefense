@@ -1,8 +1,8 @@
 #include "ObjectFactory.h"
 #include "FPSCounter.h"
-#include "PlayerHUD.h"
+#include "BaseHUD.h"
 #include "WaveHUD.h"
-#include "Player.h"
+#include "Base.h"
 #include "GameManager.h"
 #include "Tile.h"
 #include "Renderer.h"
@@ -23,13 +23,13 @@
 #include "GoldNotice.h"
 #include "GameResultPopup.h"
 
-std::shared_ptr<Player> ObjectFactory::createPlayer() {
-    auto p = std::make_shared<Player>([this]() {
+std::shared_ptr<Base> ObjectFactory::createBase() {
+    auto p = std::make_shared<Base>([this]() {
         if (gameManager) gameManager->triggerGameOver();
         createGameResultPopup(false);
     });
-    if (gameManager) gameManager->setPlayer(p.get());
-    player = p.get();
+    if (gameManager) gameManager->setBase(p.get());
+    base = p.get();
     return p;
 }
 
@@ -61,15 +61,13 @@ std::shared_ptr<Tile> ObjectFactory::createTile(int gridX, int gridY) {
 }
 
 std::shared_ptr<Monster> ObjectFactory::createMonster(const Path* path, MonsterType type) {
-    MonsterDescription desc;
-    auto it = monsterStats.find(type);
-    if (it != monsterStats.end()) desc = it->second;
+    MonsterDescription desc = monsterStats.get(type);
 
     auto monster = std::make_shared<Monster>(desc);
     monster->setPath(path);
     if (gameManager) {
-        monster->setOnReachedEnd([gm = gameManager]() { gm->dealDamageToPlayer(1); });
-        monster->setOnDefeated([gm = gameManager, gold = desc.rewardGold]() { gm->addGoldToPlayer(gold); });
+        monster->setOnReachedEnd([gm = gameManager]() { gm->dealDamageToBase(1); });
+        monster->setOnDefeated([gm = gameManager, gold = desc.rewardGold]() { gm->addGoldToBase(gold); });
         gameManager->addRoutine(monster);
     }
     if (renderer) renderer->addRenderable(monster);
@@ -107,7 +105,7 @@ std::shared_ptr<TowerSelectPanel> ObjectFactory::createTowerSelectPanel(Tile* ti
     };
 
     panel->onSelectTower = [this, tile](TowerType type, int cost) {
-        if (!player || !player->useGold(cost)) {
+        if (!base || !base->useGold(cost)) {
             createGoldNotice();
             return false;
         }
@@ -129,7 +127,7 @@ std::shared_ptr<TowerActionMenu> ObjectFactory::createTowerActionMenu(Tower* tow
     auto menu = std::make_shared<TowerActionMenu>(tower, tile, inputManager);
 
     menu->onUpgrade = [this, tower]() {
-        if (!player || !player->useGold(tower->getDescription().upgradeCost)) {
+        if (!base || !base->useGold(tower->getDescription().upgradeCost)) {
             createGoldNotice();
             return;
         }
@@ -137,7 +135,7 @@ std::shared_ptr<TowerActionMenu> ObjectFactory::createTowerActionMenu(Tower* tow
     };
 
     menu->onRemove = [this, tower, tile]() {
-        if (player) player->addGold(tower->getRefundGold());
+        if (base) base->addGold(tower->getRefundGold());
         tile->setTower(nullptr);
         tower->kill();
     };
@@ -189,7 +187,7 @@ std::shared_ptr<Wave> ObjectFactory::createWave(const Path* path) {
     auto wave = std::make_shared<Wave>(path);
 
     if (gameManager) {
-        wave->setOnComplete([gm = gameManager](int gold) { gm->addGoldToPlayer(gold); });
+        wave->setOnComplete([gm = gameManager](int gold) { gm->addGoldToBase(gold); });
         wave->setOnVictory([this]() {
             if (gameManager) gameManager->triggerVictory();
             createGameResultPopup(true);
@@ -228,8 +226,8 @@ std::shared_ptr<FPSCounter> ObjectFactory::createFPSCounter() {
     return obj;
 }
 
-std::shared_ptr<PlayerHUD> ObjectFactory::createPlayerHUD(const Player* player) {
-    auto hud = std::make_shared<PlayerHUD>(player);
+std::shared_ptr<BaseHUD> ObjectFactory::createBaseHUD(const Base* base) {
+    auto hud = std::make_shared<BaseHUD>(base);
     if (renderer) renderer->addRenderable(hud);
     return hud;
 }
