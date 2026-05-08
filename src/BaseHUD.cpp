@@ -1,10 +1,10 @@
-#include "PlayerHUD.h"
+#include "BaseHUD.h"
 
 #include <iostream>
 
-#include "Player.h"
+#include "Base.h"
 
-PlayerHUD::PlayerHUD(const Player* player) : player(player) {
+BaseHUD::BaseHUD(const Base* base) : base(base) {
     if (!font.loadFromFile("data/DungGeunMo.ttf")) return;
 
     hpText.setFont(font);
@@ -18,13 +18,13 @@ PlayerHUD::PlayerHUD(const Player* player) : player(player) {
     goldText.setPosition(10.f, 35.f);
 }
 
-void PlayerHUD::render(sf::RenderWindow& window) {
-    hpText.setString("HP: " + std::to_string(player->getHp()));
-    goldText.setString("Gold: " + std::to_string(player->getGold()));
+void BaseHUD::render(sf::RenderWindow& window) {
+    hpText.setString("HP: " + std::to_string(base->getHp()));
+    goldText.setString("Gold: " + std::to_string(base->getGold()));
     window.draw(hpText);
     window.draw(goldText);
 }
 
-RenderLayer PlayerHUD::getLayer() const {
+RenderLayer BaseHUD::getLayer() const {
     return RenderLayer::UI;
 }

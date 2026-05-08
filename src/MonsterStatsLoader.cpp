@@ -18,12 +18,12 @@ MonsterType MonsterStatsLoader::parseMonsterType(const std::string& str) {
     return MonsterType::Goblin;
 }
 
-std::map<MonsterType, MonsterDescription> MonsterStatsLoader::load(const std::string& statsFile) {
+MonsterStats MonsterStatsLoader::load(const std::string& statsFile) {
     std::ifstream file(statsFile);
     std::map<MonsterType, MonsterDescription> result;
     std::string line;
 
-    if (!file.is_open()) return result;
+    if (!file.is_open()) return MonsterStats(result);
 
     std::getline(file, line); // 헤더 스킵
 
@@ -55,5 +55,5 @@ std::map<MonsterType, MonsterDescription> MonsterStatsLoader::load(const std::st
         result[desc.type] = desc;
     }
 
-    return result;
+    return MonsterStats(std::move(result));
 }

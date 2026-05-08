@@ -16,10 +16,10 @@ int main() {
     ObjectFactory::getInstance().initialize(&gameManager, &renderer, &inputManager);
     ObjectFactory::getInstance().createFPSCounter();
 
-    auto player = ObjectFactory::getInstance().createPlayer();
+    auto base = ObjectFactory::getInstance().createBase();
     auto map    = ObjectFactory::getInstance().createMap(26, 15);
     auto wave      = ObjectFactory::getInstance().createWave(&map->getPath());
-    auto playerHud  = ObjectFactory::getInstance().createPlayerHUD(player.get());
+    auto baseHud  = ObjectFactory::getInstance().createBaseHUD(base.get());
     auto waveHud    = ObjectFactory::getInstance().createWaveHUD(wave.get());
 
 

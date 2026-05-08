@@ -3,7 +3,7 @@
 #include <memory>
 #include "IRoutine.h"
 
-class Player;
+class Base;
 class Monster;
 
 class GameManager {
@@ -14,14 +14,14 @@ private:
     GameState currentState;
     std::vector<std::shared_ptr<IRoutine>> routines;
     std::vector<std::shared_ptr<IRoutine>> pendingAdds;
-    Player* player = nullptr;
+    Base* base = nullptr;
 
 public:
     GameManager();
 
-    void setPlayer(Player* p);
-    void dealDamageToPlayer(int damage);
-    void addGoldToPlayer(int amount);
+    void setBase(Base* b);
+    void dealDamageToBase(int damage);
+    void addGoldToBase(int amount);
 
     void addRoutine(std::shared_ptr<IRoutine> routine);
     void triggerGameOver();

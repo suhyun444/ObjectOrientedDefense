@@ -6,7 +6,7 @@
 // 객체 식별을 위한 태그 열거형
 enum class Tag {
     Default,
-    Player,
+    Base,
     Monster,
     Tower,
     Projectile,
