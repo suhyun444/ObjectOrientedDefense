@@ -1,7 +1,6 @@
 #include "Wave.h"
 #include "Monster.h"
 #include "ObjectFactory.h"
-#include "Time.h"
 #include <algorithm>
 #include <iostream>
 
@@ -19,7 +18,7 @@ Wave::Wave(const Path* path)
       spawnIndex(0),
       spawningComplete(true),
       rewardGiven(true),
-      spawnElapsed(0.f),
+      spawnTimer(0.f),
       path(path) {
     waveStartButton = ObjectFactory::getInstance().createWaveStartButton(this);
 }
@@ -27,7 +26,6 @@ Wave::Wave(const Path* path)
 bool Wave::loadFromFile() {
     ++level;
     spawnIndex = 0;
-    spawnElapsed = 0.f;
     monsters.clear();
     rewardGiven = false;
     std::string filePath = "data/wave_" + std::to_string(level) + ".csv";
@@ -39,8 +37,7 @@ bool Wave::loadFromFile() {
     }
     spawningComplete = false;
 
-    // 첫 스폰을 즉시 트리거하기 위해 elapsed를 첫 spawnTime으로 초기화
-    spawnElapsed = description.spawns[0].spawnTime;
+    spawnTimer.reset(0.f);
     std::cout << "[Wave " << level << "] Start\n";
     return true;
 }
@@ -91,12 +88,11 @@ void Wave::update() {
             rewardGiven = true;
         }
     } else {
-        spawnElapsed += Time::getDeltaTime();
-
-        float interval = description.spawns[spawnIndex].spawnTime;
-        if (spawnElapsed >= interval) {
+        spawnTimer.tick();
+        if (spawnTimer.isFinished()) {
             spawnMonster();
-            spawnElapsed = 0.f;
+            if (!spawningComplete)
+                spawnTimer.reset(description.spawns[spawnIndex].spawnTime);
         }
     }
 

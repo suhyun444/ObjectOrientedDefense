@@ -1,8 +1,6 @@
 #pragma once
 
-#include "IRoutine.h"
-
-class Timer : public IRoutine {
+class Timer {
 private:
     float duration;
     float elapsed;
@@ -12,8 +10,9 @@ public:
     explicit Timer(float duration);
 
     void reset();
+    void reset(float newDuration);
     bool isFinished() const;
     float getElapsed() const;
 
-    void update() override;
+    void tick();
 };
