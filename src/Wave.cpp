@@ -2,6 +2,7 @@
 #include "Monster.h"
 #include "ObjectFactory.h"
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 
 static const char* monsterTypeName(MonsterType t) {
@@ -31,14 +32,26 @@ bool Wave::loadFromFile() {
     std::string filePath = "data/wave_" + std::to_string(level) + ".csv";
     description = parser.parseWave(filePath);
 
-    if (description.spawns.empty()) {
-        if (onVictory) onVictory();
+    if (description.hasError) {
+        --level;
+        std::cerr << "[CSV Error] " << description.errorMessage << "\n";
+        ObjectFactory::getInstance().createErrorPopup();
         return false;
     }
+
+    if (description.spawns.empty()) {
+        --level;
+        return false;
+    }
+
     spawningComplete = false;
 
+    std::string nextPath = "data/wave_" + std::to_string(level + 1) + ".csv";
+    std::ifstream nextCheck(nextPath);
+    isLastWave_ = !nextCheck.is_open();
+
     spawnTimer.reset(0.f);
-    std::cout << "[Wave " << level << "] Start\n";
+    std::cout << "[Wave " << level << "] Start" << (isLastWave_ ? " (마지막 웨이브)" : "") << "\n";
     return true;
 }
 
@@ -86,6 +99,9 @@ void Wave::update() {
         if (!rewardGiven && isAllMonstersDefeated()) {
             if (onComplete) onComplete(description.rewardGold);
             rewardGiven = true;
+            if (isLastWave_) {
+                if (onVictory) onVictory();
+            }
         }
     } else {
         spawnTimer.tick();

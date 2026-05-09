@@ -22,6 +22,7 @@
 #include "TowerActionMenu.h"
 #include "GoldNotice.h"
 #include "GameResultPopup.h"
+#include "ErrorPopup.h"
 
 std::shared_ptr<Base> ObjectFactory::createBase() {
     auto p = std::make_shared<Base>([this]() {
@@ -153,6 +154,16 @@ void ObjectFactory::createGameResultPopup(bool isVictory) {
         if (renderer) renderer->getWindow().close();
     });
     activeGameResultPopup = popup;
+    renderer->addRenderable(popup);
+    if (inputManager) inputManager->addPriorityClickable(popup);
+}
+
+void ObjectFactory::createErrorPopup() {
+    if (!renderer) return;
+    auto popup = std::make_shared<ErrorPopup>(renderer->getWindow(), [this]() {
+        if (renderer) renderer->getWindow().close();
+    });
+    activeErrorPopup = popup;
     renderer->addRenderable(popup);
     if (inputManager) inputManager->addPriorityClickable(popup);
 }

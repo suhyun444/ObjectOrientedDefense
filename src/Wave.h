@@ -21,6 +21,7 @@ private:
     int spawnIndex;
     bool spawningComplete;
     bool rewardGiven;
+    bool isLastWave_ = false;
     Timer spawnTimer;
     std::vector<std::shared_ptr<Monster>> monsters;
     const Path* path;
