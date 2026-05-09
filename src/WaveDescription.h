@@ -2,6 +2,7 @@
 
 #include "MonsterDescription.h"
 #include <vector>
+#include <string>
 
 struct SpawnEvent {
     float spawnTime;
@@ -11,4 +12,6 @@ struct SpawnEvent {
 struct WaveDescription {
     int rewardGold = 0;
     std::vector<SpawnEvent> spawns;
+    bool hasError = false;
+    std::string errorMessage;
 };
