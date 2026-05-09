@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IRoutine.h"
+#include "Timer.h"
 #include "WaveDescription.h"
 #include "WaveParser.h"
 #include <functional>
@@ -20,7 +21,7 @@ private:
     int spawnIndex;
     bool spawningComplete;
     bool rewardGiven;
-    float spawnElapsed;
+    Timer spawnTimer;
     std::vector<std::shared_ptr<Monster>> monsters;
     const Path* path;
     std::function<void(int)> onComplete;
