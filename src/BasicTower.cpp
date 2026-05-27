@@ -10,7 +10,7 @@ BasicTower::BasicTower() {
 }
 
 std::shared_ptr<Monster> BasicTower::getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const {
-    return findMostAdvancedTarget(monsters);
+    return selectTarget(monsters);
 }
 
 void BasicTower::fire(const std::shared_ptr<Monster>& target) {

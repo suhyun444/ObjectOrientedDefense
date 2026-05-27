@@ -1,8 +1,7 @@
 #include "Tower.h"
 #include "Monster.h"
 #include "Time.h"
-#include <cmath>
-#include <limits>
+#include "MostAdvancedTargeting.h"
 
 static sf::Font& getSharedFont() {
     static sf::Font font;
@@ -14,7 +13,8 @@ static sf::Font& getSharedFont() {
 Tower::Tower(const TowerDescription& desc)
     : GameObject(Tag::Tower),
       description(desc),
-      gridPosition(0, 0) {
+      gridPosition(0, 0),
+      targetingStrategy(std::make_unique<MostAdvancedTargeting>()) {
     shape.setSize({46.f, 46.f});
     shape.setFillColor(description.color);
 }
@@ -46,25 +46,10 @@ void Tower::update() {
     fireCooldown = 1.0f / description.fireRate;
 }
 
-std::shared_ptr<Monster> Tower::findMostAdvancedTarget(
+std::shared_ptr<Monster> Tower::selectTarget(
     const std::vector<std::shared_ptr<Monster>>& monsters) const
 {
-    std::shared_ptr<Monster> best;
-    int bestWP = -1;
-    float bestDist = std::numeric_limits<float>::max();
-    for (const auto& m : monsters) {
-        sf::Vector2f diff = m->getPosition() - position;
-        float dist = std::sqrt(diff.x * diff.x + diff.y * diff.y);
-        if (dist > description.range) continue;
-        int wp = m->getWaypointIndex();
-        float distToNext = m->getDistanceToNextWaypoint();
-        if (wp > bestWP || (wp == bestWP && distToNext < bestDist)) {
-            bestWP = wp;
-            bestDist = distToNext;
-            best = m;
-        }
-    }
-    return best;
+    return targetingStrategy->selectTarget(position, description.range, monsters);
 }
 
 bool Tower::isAlive() const {

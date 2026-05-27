@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "TowerDescription.h"
+#include "ITargetingStrategy.h"
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -22,6 +23,7 @@ private:
     bool alive = true;
     float fireCooldown = 0.f;
     sf::RectangleShape shape;
+    std::unique_ptr<ITargetingStrategy> targetingStrategy;
 
 public:
     std::function<std::vector<std::shared_ptr<Monster>>()> monstersProvider;
@@ -44,7 +46,7 @@ public:
     RenderLayer  getLayer()               const override;
 
 protected:
-    std::shared_ptr<Monster> findMostAdvancedTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const;
+    std::shared_ptr<Monster> selectTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const;
 
 private:
     virtual std::shared_ptr<Monster>     getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const = 0;
