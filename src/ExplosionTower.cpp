@@ -10,7 +10,7 @@ ExplosionTower::ExplosionTower() {
 }
 
 std::shared_ptr<Monster> ExplosionTower::getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const {
-    return findMostAdvancedTarget(monsters);
+    return selectTarget(monsters);
 }
 
 void ExplosionTower::fire(const std::shared_ptr<Monster>& target) {

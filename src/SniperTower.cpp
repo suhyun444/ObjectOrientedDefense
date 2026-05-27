@@ -10,7 +10,7 @@ SniperTower::SniperTower() {
 }
 
 std::shared_ptr<Monster> SniperTower::getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const {
-    return findMostAdvancedTarget(monsters);
+    return selectTarget(monsters);
 }
 
 void SniperTower::fire(const std::shared_ptr<Monster>& target) {

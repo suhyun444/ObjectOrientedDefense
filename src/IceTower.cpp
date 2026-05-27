@@ -10,7 +10,7 @@ IceTower::IceTower() {
 }
 
 std::shared_ptr<Monster> IceTower::getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const {
-    return findMostAdvancedTarget(monsters);
+    return selectTarget(monsters);
 }
 
 void IceTower::fire(const std::shared_ptr<Monster>& target) {
