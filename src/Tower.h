@@ -45,6 +45,9 @@ public:
     void         render(sf::RenderWindow& win)  override;
     RenderLayer  getLayer()               const override;
 
+protected:
+    void setTargetingStrategy(std::unique_ptr<ITargetingStrategy> s);
+
 private:
     std::shared_ptr<Monster> selectTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const;
 

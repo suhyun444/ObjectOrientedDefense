@@ -27,6 +27,7 @@ public:
     void setOnDefeated(std::function<void()> callback);
     void takeDamage(int damage);
     void applySlow(float factor, float duration);
+    int getHealth() const { return health; }
     int getWaypointIndex() const { return waypointIndex; }
     float getDistanceToNextWaypoint() const;
 

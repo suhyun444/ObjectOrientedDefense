@@ -37,6 +37,10 @@ void Tower::setMonstersProvider(std::function<std::vector<std::shared_ptr<Monste
     monstersProvider = std::move(fn);
 }
 
+void Tower::setTargetingStrategy(std::unique_ptr<ITargetingStrategy> s) {
+    targetingStrategy = std::move(s);
+}
+
 void Tower::update() {
     fireCooldown -= Time::getDeltaTime();
     if (fireCooldown > 0.f || !monstersProvider) return;
