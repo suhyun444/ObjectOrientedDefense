@@ -9,14 +9,6 @@ BasicTower::BasicTower() {
     };
 }
 
-std::shared_ptr<Monster> BasicTower::getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const {
-    return selectTarget(monsters);
-}
-
-void BasicTower::fire(const std::shared_ptr<Monster>& target) {
-    createProjectile(target);
-}
-
 std::shared_ptr<Projectile> BasicTower::createProjectile(const std::shared_ptr<Monster>& target) {
     auto proj = std::make_shared<NormalProjectile>(target, description.damage,400.f);
     proj->setPosition(position.x + 23.f, position.y + 23.f);

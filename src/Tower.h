@@ -45,11 +45,8 @@ public:
     void         render(sf::RenderWindow& win)  override;
     RenderLayer  getLayer()               const override;
 
-protected:
+private:
     std::shared_ptr<Monster> selectTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const;
 
-private:
-    virtual std::shared_ptr<Monster>     getTarget(const std::vector<std::shared_ptr<Monster>>& monsters) const = 0;
-    virtual void                         fire(const std::shared_ptr<Monster>& target) = 0;
     virtual std::shared_ptr<Projectile>  createProjectile(const std::shared_ptr<Monster>& target) = 0;
 };

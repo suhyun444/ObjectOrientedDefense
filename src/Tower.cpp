@@ -40,9 +40,9 @@ void Tower::setMonstersProvider(std::function<std::vector<std::shared_ptr<Monste
 void Tower::update() {
     fireCooldown -= Time::getDeltaTime();
     if (fireCooldown > 0.f || !monstersProvider) return;
-    auto target = getTarget(monstersProvider());
+    auto target = selectTarget(monstersProvider());
     if (!target) return;
-    fire(target);
+    createProjectile(target);
     fireCooldown = 1.0f / description.fireRate;
 }
 
